@@ -6,7 +6,7 @@ import time
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, manage_session=False)
+socketio = SocketIO(app)
 
 chats = {}  # Diccionario para almacenar los chats de cada cliente
 clientes_conectados = {}  # Diccionario de clientes conectados
@@ -22,6 +22,7 @@ def admin_page():
 def handle_connect():
     user_id = str(uuid.uuid4())  # Generar un ID único para cada cliente
     session['user_id'] = user_id
+    print("Usuario conectado:", user_id)  # 👈 Agrega esto
     clientes_conectados[user_id] = {'user_id': user_id}
 
     emit('connected', {'user_id': user_id})
@@ -42,6 +43,7 @@ def handle_join():
     if user_id not in chats:
         chats[user_id] = []
     emit('chat_history', chats[user_id], room=user_id)
+    print("Usuario intentando unirse con ID:", user_id)  # 👈 Agrega esto
 
 @socketio.on('message')
 def handle_message(data):
