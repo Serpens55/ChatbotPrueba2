@@ -6,7 +6,8 @@ import time
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+socketio = SocketIO(app, manage_session=False)
+
 
 chats = {}  # Diccionario para almacenar los chats de cada cliente
 clientes_conectados = {}  # Diccionario de clientes conectados
@@ -22,8 +23,10 @@ def admin_page():
 def handle_connect():
     user_id = str(uuid.uuid4())  # Generar un ID único para cada cliente
     session['user_id'] = user_id
-    print("Usuario conectado:", user_id)  # 👈 Agrega esto
     clientes_conectados[user_id] = {'user_id': user_id}
+
+    print("Conexión establecida. ID generado:", user_id)
+    print("Sesión actual:", dict(session))  # <== Verifica si la sesión persiste
 
     emit('connected', {'user_id': user_id})
     emit('update_chat_list', list(clientes_conectados.keys()), broadcast=True)
