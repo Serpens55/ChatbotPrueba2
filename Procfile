@@ -1,1 +1,2 @@
-web: gunicorn -w 1 -k eventlet -b 0.0.0.0:8000 App:app
+gunicorn -k gevent app:app
+
