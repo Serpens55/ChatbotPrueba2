@@ -60,14 +60,18 @@ def handle_message(data):
     msg = {'text': data['text'], 'timestamp': time.strftime('%H:%M:%S'), 'sender': 'cliente'}
     chats[user_id].append(msg)
 
-    emit('message', msg, room=request.sid)
+    # Enviar el mensaje al admin
     emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
+
+    # También enviar el mensaje al cliente para que lo vea
+    emit('message', msg, room=request.sid)
+
 
 @socketio.on('admin_select_chat')
 def admin_select_chat(data):
     user_id = data['user_id']
-    if user_id in chats:
-        emit('chat_history', chats[user_id], room=request.sid)
+    join_room(user_id)  # El admin se une a la sala del cliente
+    emit('chat_history', chats.get(user_id, []), room=request.sid)
 
 @socketio.on('admin_message')
 def handle_admin_message(data):
