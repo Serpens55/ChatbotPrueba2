@@ -2,6 +2,7 @@ const socket = io();
 let userId = null;
 
 socket.on("connected", function (data) {
+    console.log("User connected with ID:", data.user_id);  // Añade un log para comprobar
     userId = data.user_id;
     document.getElementById("user-id").textContent = userId;
     socket.emit("join");
