@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+    max-width: 1200px;
+    margin: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chat-sidebar {
+    width: 30%;
+    background: #f1f1f1;
+    padding: 10px;
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+
+.chat-window {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.chat-box {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    background: #e5ddd5;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.chat-input button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 4px;
+}
+
+/* Mensajes propios (admin o cliente) en azul con letras blancas, alineados a la derecha */
+.own-message {
+    background: blue;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    align-self: flex-end;
+    max-width: 60%;
+    margin: 5px 0;
+    text-align: right;
+}
+
+
+/* Mensajes de la otra persona en blanco con letras negras, alineados a la izquierda */
+.other-message {
+    background: white;
+    color: black;
+    padding: 8px;
+    border-radius: 5px;
+    align-self: flex-start;
+    max-width: 60%;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+/* Mejoras para la lista de chats */
+.chat-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chat-list button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    background: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.chat-list button:hover {
+    background: #ddd;
+}
+
+
