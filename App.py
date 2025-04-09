@@ -5,7 +5,8 @@ import time
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
-socketio = SocketIO(app, manage_session=False)
+socketio = SocketIO(app, async_mode='eventlet', manage_session=False)
+
 
 chats = {}  # Diccionario para almacenar los chats por cliente
 clientes_conectados = {}  # Diccionario de clientes conectados
