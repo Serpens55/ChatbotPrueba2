@@ -57,14 +57,28 @@ def handle_message(data):
     if user_id not in chats:
         chats[user_id] = []
 
-    msg = {'text': data['text'], 'timestamp': time.strftime('%H:%M:%S'), 'sender': 'cliente'}
+    msg = {
+        'text': data['text'],
+        'timestamp': time.strftime('%H:%M:%S'),
+        'sender': 'cliente'
+    }
     chats[user_id].append(msg)
 
-    # Enviar el mensaje al admin
+    # Emitir el mensaje del cliente al cliente y admin
+    emit('message', msg, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
 
-    # También enviar el mensaje al cliente para que lo vea
-    emit('message', msg, room=request.sid)
+    # Si el cliente escribe "Hola", responder con un audio
+    if data['text'].strip().lower() == "hola":
+        audio_msg = {
+            'audio_url': '/static/audio/hola.mp3',
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'admin'
+        }
+        chats[user_id].append(audio_msg)
+
+        emit('message', audio_msg, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': audio_msg}, broadcast=True)
 
 
 @socketio.on('admin_select_chat')

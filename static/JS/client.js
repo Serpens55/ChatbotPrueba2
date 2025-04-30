@@ -28,10 +28,21 @@ function sendMessage() {
 }
 
 socket.on("message", function (data) {
-    const messageElement = document.createElement("div");
-    messageElement.textContent = (data.sender === "cliente" ? "Tú: " : "Admin: ") + data.text + " (" + data.timestamp + ")";
-    messageElement.classList.add(data.sender === "cliente" ? "own-message" : "other-message");
-    chatBox.appendChild(messageElement);
+    if (data.audio_url) {
+        const audio = new Audio(data.audio_url);
+        audio.play();
+
+        const audioElement = document.createElement("div");
+        audioElement.textContent = `Audio (${data.timestamp})`;
+        audioElement.classList.add("other-message");
+        chatBox.appendChild(audioElement);
+    } else {
+        const messageElement = document.createElement("div");
+        messageElement.textContent = (data.sender === "cliente" ? "Tú: " : "Admin: ") + data.text + " (" + data.timestamp + ")";
+        messageElement.classList.add(data.sender === "cliente" ? "own-message" : "other-message");
+        chatBox.appendChild(messageElement);
+    }
+
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
