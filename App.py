@@ -80,6 +80,17 @@ def handle_message(data):
         emit('message', audio_msg, room=user_id)
         emit('message_admin', {'user_id': user_id, 'message': audio_msg}, broadcast=True)
 
+    if data['text'].strip().lower() == "contacta con un administrador":
+        audio_msg = {
+            'audio_url': '/static/audio/contactoadmin.mp3',
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'admin'
+        }
+        chats[user_id].append(audio_msg)
+
+        emit('message', audio_msg, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': audio_msg}, broadcast=True)
+    
 
 @socketio.on('admin_select_chat')
 def admin_select_chat(data):
