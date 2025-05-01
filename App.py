@@ -37,7 +37,7 @@ def handle_connect():
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    user_id = session.get('user_id')
+    user_id = request.sid
     if user_id:
         clientes_conectados.pop(request.sid, None)
         chats.pop(user_id, None)
@@ -45,7 +45,7 @@ def handle_disconnect():
 
 @socketio.on('join')
 def handle_join():
-    user_id = session.get('user_id')
+    user_id = request.sid
     join_room(request.sid)  # Unir a la sala basada en el SID de la conexión actual
     if user_id not in chats:
         chats[user_id] = []
@@ -53,7 +53,7 @@ def handle_join():
 
 @socketio.on('message')
 def handle_message(data):
-    user_id = session.get('user_id')
+    user_id = request.sid
     if user_id not in chats:
         chats[user_id] = []
 
@@ -66,7 +66,7 @@ def handle_message(data):
 
     # Emitir el mensaje del cliente al cliente y admin
     emit('message', msg, room=user_id)
-    socketio.emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
+    socketio.emit('message_admin', {'user_id': user_id, 'message': msg})
 
     # Si el cliente escribe "Hola", responder con un audio
     if data['text'].strip().lower() == "hola":
