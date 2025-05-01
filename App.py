@@ -66,7 +66,7 @@ def handle_message(data):
 
     # Emitir el mensaje del cliente al cliente y admin
     emit('message', msg, room=user_id)
-    emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
+    socketio.emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
 
     # Si el cliente escribe "Hola", responder con un audio
     if data['text'].strip().lower() == "hola":

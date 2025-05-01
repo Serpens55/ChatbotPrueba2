@@ -64,6 +64,8 @@ socket.on("chat_history", function (messages) {
     messages.forEach(msg => displayMessage(msg));
 });
 
+
+
 socket.on("message_admin", function (data) {
     console.log("Mensaje recibido en el admin:", data); // Verificar estructura
 
@@ -74,5 +76,7 @@ socket.on("message_admin", function (data) {
     if (!isDuplicate && selectedChat === data.user_id) {
         displayMessage({ text: data.message.text, sender: adminId });
     }
-});
+
+}
+);
 
