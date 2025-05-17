@@ -28,23 +28,27 @@ function sendMessage() {
 }
 
 socket.on("message", function (data) {
-    if (data.audio_url) {
-        const audio = new Audio(data.audio_url);
-        audio.play();
+    const messageElement = document.createElement("div");
 
-        const audioElement = document.createElement("div");
-        audioElement.textContent = `Audio (${data.timestamp})`;
-        audioElement.classList.add("other-message");
-        chatBox.appendChild(audioElement);
+    if (data.audio_url) {
+        // Si hay un audio, crea un botón para reproducirlo
+        const button = document.createElement("button");
+        button.textContent = data.text || "Reproducir audio";
+        button.addEventListener("click", () => {
+            const audio = new Audio(data.audio_url);
+            audio.play();
+        });
+        messageElement.appendChild(button);
     } else {
-        const messageElement = document.createElement("div");
+        // Mensaje de texto normal
         messageElement.textContent = (data.sender === "cliente" ? "Tú: " : "Admin: ") + data.text + " (" + data.timestamp + ")";
-        messageElement.classList.add(data.sender === "cliente" ? "own-message" : "other-message");
-        chatBox.appendChild(messageElement);
     }
 
+    messageElement.classList.add(data.sender === "cliente" ? "own-message" : "other-message");
+    chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
 
 ;
 
