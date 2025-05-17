@@ -30,15 +30,25 @@ function sendMessage() {
 }
 
 function displayMessage(data, isLocal = false) {
-    console.log("Mensaje recibido para mostrar:", data); // Depuración
-
     const messageElement = document.createElement("div");
-    messageElement.textContent = (data.sender === adminId ? "Tú: " : "Cliente: ") + data.text;
-    messageElement.classList.add(data.sender === adminId ? "own-message" : "other-message"); 
+
+    if (data.audio_url) {
+        const button = document.createElement("button");
+        button.textContent = data.text || "Reproducir audio";
+        button.addEventListener("click", () => {
+            const audio = new Audio(data.audio_url);
+            audio.play();
+        });
+        messageElement.appendChild(button);
+    } else {
+        messageElement.textContent = (data.sender === "cliente" || data.sender === "admin" ? 
+            (data.sender === "cliente" ? "Cliente: " : "Tú: ") : "") + data.text;
+    }
+
+    messageElement.classList.add(data.sender === "admin" ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Marcar los mensajes locales para evitar duplicaciones cuando regresen del servidor
     if (isLocal) {
         messageElement.dataset.local = "true";
     }
