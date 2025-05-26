@@ -33,7 +33,7 @@ socket.on("message", function (data) {
     if (data.audio_url) {
         // Si hay un audio, crea un botón para reproducirlo
         const button = document.createElement("button");
-        button.textContent = data.text || "Reproducir audio";
+        button.textContent = data.text || "Reproducir ▶";
         button.addEventListener("click", () => {
             const audio = new Audio(data.audio_url);
             audio.play();
