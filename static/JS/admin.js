@@ -1,3 +1,4 @@
+
 const socket = io(); 
 const chatList = document.getElementById("chat-list");
 const chatBox = document.getElementById("chat-box");
@@ -22,10 +23,7 @@ function sendMessage() {
             sender: adminId
         };
 
-        // Mostrar mensaje localmente
-        displayMessage(messageData, true);
-
-        // Enviar al servidor
+        // Enviar al servidor (ya no mostramos localmente aquí)
         socket.emit("admin_message", messageData);
 
         // Limpiar input
@@ -33,11 +31,11 @@ function sendMessage() {
     }
 }
 
-function displayMessage(data, isLocal = false) {
+function displayMessage(data) {
     const messageElement = document.createElement("div");
 
     const senderIsAdmin = data.sender === "Admin" || data.sender === adminId;
-    const senderLabel = isLocal || senderIsAdmin ? "Tú" : data.sender;
+    const senderLabel = senderIsAdmin ? "Tú" : data.sender;
 
     if (data.audio_url) {
         const button = document.createElement("button");
