@@ -24,11 +24,8 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 socket.on("connected", function (data) {
-    console.log("Conectado con ID:", data.user_id);
-    userId = data.user_id;
-    document.getElementById("user-id").textContent = userId;
-    socket.emit("join");
-}); 
+    // Ya no necesitas mostrar el ID, ahora se muestra el nombre
+});
 
 const chatBox = document.getElementById("chat-box");
 const messageInput = document.getElementById("message");
