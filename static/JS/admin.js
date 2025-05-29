@@ -31,27 +31,25 @@ function sendMessage() {
 
 function displayMessage(data, isLocal = false) {
     const messageElement = document.createElement("div");
-
+    
     if (data.audio_url) {
         const button = document.createElement("button");
-        button.textContent = data.text || "Reproducir audio";
-        button.addEventListener("click", () => {
+        button.textContent = "Reproducir audio";
+        button.onclick = () => {
             const audio = new Audio(data.audio_url);
             audio.play();
-        });
+        };
         messageElement.appendChild(button);
     } else {
-    messageElement.textContent = `${data.sender}: ${data.text}`;
+        messageElement.textContent =
+            (data.sender === "Admin" ? "Tú: " : data.sender + ": ") + data.text;
     }
 
-    messageElement.classList.add(data.sender === adminId ? "own-message" : "other-message");
+    messageElement.classList.add(data.sender === "Admin" ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
-
-    if (isLocal) {
-        messageElement.dataset.local = "true";
-    }
 }
+
 
 socket.on("update_chat_list", function (clients) {
     chatList.innerHTML = "";
@@ -85,7 +83,11 @@ socket.on("message_admin", function (data) {
     const isDuplicate = existingMessages.some(msgEl => msgEl.textContent.includes(data.message.text) && msgEl.dataset.local === "true");
 
     if (!isDuplicate && selectedChat === data.user_id) {
-        displayMessage(data.message);
+         displayMessage({
+            text: data.message.text,
+            sender: data.message.sender,  // ✅ Usa el sender correcto
+            timestamp: data.message.timestamp
+        });
     }
 
 }
