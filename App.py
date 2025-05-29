@@ -73,9 +73,6 @@ def handle_message(data):
     }
     chats.setdefault(user_id, []).append(msg)
 
-    emit('message', msg, room=user_id)
-    emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
-
     # Emitir el mensaje del cliente al cliente y admin
     emit('message', msg, room=user_id)
     socketio.emit('message_admin', {'user_id': user_id, 'message': msg})
