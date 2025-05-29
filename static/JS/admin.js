@@ -31,7 +31,7 @@ function sendMessage() {
 
 function displayMessage(data, isLocal = false) {
     const messageElement = document.createElement("div");
-    
+
     if (data.audio_url) {
         const button = document.createElement("button");
         button.textContent = "Reproducir audio";
@@ -41,14 +41,15 @@ function displayMessage(data, isLocal = false) {
         };
         messageElement.appendChild(button);
     } else {
-        messageElement.textContent =
-            (data.sender === "Admin" ? "Tú: " : data.sender + ": ") + data.text;
+        const senderLabel = (data.sender === "Admin" || data.sender === adminId) ? "Tú" : data.sender;
+        messageElement.textContent = senderLabel + ": " + data.text;
     }
 
-    messageElement.classList.add(data.sender === "Admin" ? "own-message" : "other-message");
+    messageElement.classList.add(data.sender === "Admin" || data.sender === adminId ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 
 
 socket.on("update_chat_list", function (clients) {
