@@ -2,29 +2,20 @@ const socket = io();
 let userId = null;
 let userName = null;
 
-socket.on("connect", function () {
-    socket.emit("register_name", { name: userName });
-});
-
-window.onload = function () {
-    userName = prompt("Ingresa tu nombre:");
-    if (!userName) userName = "Invitado";
-    
-    socket.emit("register_name", { name: userName });
-};
-
 window.addEventListener("DOMContentLoaded", () => {
     userName = prompt("Ingresa tu nombre:");
     if (!userName) userName = "Invitado";
 
     document.getElementById("user-name").textContent = userName;
 
-    // Registrar el nombre con el servidor
     socket.emit("register_name", { name: userName });
 });
 
 socket.on("connected", function (data) {
-    // Ya no necesitas mostrar el ID, ahora se muestra el nombre
+    console.log("Conectado con ID:", data.user_id);
+    userId = data.user_id;
+    document.getElementById("user-id").textContent = userId;
+    socket.emit("join");
 });
 
 const chatBox = document.getElementById("chat-box");
@@ -41,12 +32,8 @@ messageInput.addEventListener("keypress", function (event) {
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "") {
-        socket.emit("message", { text: message }); // Solo enviamos el mensaje
-        messageInput.value = ""; // Limpiamos el input después de enviarlo
-
-        socket.emit("register_name", { name: name });
-        console.log("Nombre enviado al servidor:", name);
-
+        socket.emit("message", { text: message });
+        messageInput.value = "";
     }
 }
 
@@ -54,7 +41,6 @@ socket.on("message", function (data) {
     const messageElement = document.createElement("div");
 
     if (data.audio_url) {
-        // Si hay un audio, crea un botón para reproducirlo
         const button = document.createElement("button");
         button.textContent = data.text || "Reproducir ▶";
         button.addEventListener("click", () => {
@@ -63,15 +49,11 @@ socket.on("message", function (data) {
         });
         messageElement.appendChild(button);
     } else {
-        // Mensaje de texto normal
-           messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
+        messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
     }
 
     messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
-
-
-;
 

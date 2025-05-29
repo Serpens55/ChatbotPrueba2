@@ -1,89 +1,72 @@
-<!-- index.html - Interfaz de Cliente -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Cliente</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
-</head>
-<body>
-    <div class="chat-container">
-        <div class="chat-header">Chat de <span id="user-name">...</span></div>
-        <div class="chat-box" id="chat-box"></div>
-        <div class="chat-input">
-            <input type="text" id="message" placeholder="Escribe tu mensaje...">
-            <button id="send">Enviar</button>
-        </div>        
-    </div>
+<!-- index.html (fragmento relevante) -->
+<div>
+    <strong>Usuario:</strong> <span id="user-name"></span><br>
+    <strong>ID:</strong> <span id="user-id"></span>
+</div>
 
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; margin-top: 10px;"></div>
 
-    <script>
-        const socket = io();
+<input type="text" id="message" placeholder="Escribe tu mensaje..." />
+<button id="send">Enviar</button>
 
-        socket.on("connect", () => {
-            const name = prompt("Ingresa tu nombre:");
-            if (name) {
-                socket.emit("register_name", { name: name });
-                console.log("Nombre enviado al servidor:", name);
-            }
-        });
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    let userId = null;
+    let userName = null;
 
-        socket.on("connected", (data) => {
-            document.getElementById("user-id").textContent = data.user_id;
-        });
+    window.addEventListener("DOMContentLoaded", () => {
+        userName = prompt("Ingresa tu nombre:");
+        if (!userName) userName = "Invitado";
 
-        socket.on("message", (msg) => {
-            displayMessage(msg);
-        });
+        document.getElementById("user-name").textContent = userName;
 
-function displayMessage(msg) {
+        socket.emit("register_name", { name: userName });
+    });
+
+    socket.on("connected", function (data) {
+        console.log("Conectado con ID:", data.user_id);
+        userId = data.user_id;
+        document.getElementById("user-id").textContent = userId;
+        socket.emit("join");
+    });
+
     const chatBox = document.getElementById("chat-box");
-    const messageEl = document.createElement("div");
+    const messageInput = document.getElementById("message");
+    const sendButton = document.getElementById("send");
 
-    const isAdmin = msg.sender === 'admin' || msg.sender === 'Admin';
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
 
-    if (msg.audio_url) {
-        messageEl.innerHTML = `
-            <div class="${isAdmin ? 'other-message' : 'own-message'}">
-                <strong>${msg.sender}:</strong><br>
-                <audio controls>
-                    <source src="${msg.audio_url}" type="audio/mpeg">
-                    Tu navegador no soporta el elemento de audio.
-                </audio>
-                <div class="timestamp">${msg.timestamp || ''}</div>
-            </div>
-        `;
-    } else {
-        messageEl.innerHTML = `
-            <div class="${isAdmin ? 'other-message' : 'own-message'}">
-                <strong>${msg.sender}:</strong> ${msg.text}
-                <div class="timestamp">${msg.timestamp || ''}</div>
-            </div>
-        `;
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message !== "") {
+            socket.emit("message", { text: message });
+            messageInput.value = "";
+        }
     }
 
-    chatBox.appendChild(messageEl);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+    socket.on("message", function (data) {
+        const messageElement = document.createElement("div");
 
-
-        const sendButton = document.getElementById("send");
-        const messageInput = document.getElementById("message");
-
-        sendButton.addEventListener("click", sendMessage);
-        messageInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") sendMessage();
-        });
-
-        function sendMessage() {
-            const text = messageInput.value.trim();
-            if (text !== "") {
-                socket.emit("message", { text: text });
-                messageInput.value = "";
-            }
+        if (data.audio_url) {
+            const button = document.createElement("button");
+            button.textContent = data.text || "Reproducir ▶";
+            button.addEventListener("click", () => {
+                const audio = new Audio(data.audio_url);
+                audio.play();
+            });
+            messageElement.appendChild(button);
+        } else {
+            messageElement.textContent = ` ${data.sender}: ${data.text} (${data.timestamp})`;
         }
-    </script>
-</body>
-</html>
+
+        messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+</script>
