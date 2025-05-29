@@ -41,14 +41,15 @@ function displayMessage(data, isLocal = false) {
         };
         messageElement.appendChild(button);
     } else {
-        const senderLabel = (data.sender === "Admin" || data.sender === adminId) ? "Tú" : data.sender;
+        const senderLabel = isLocal ? "Tú" : data.sender;
         messageElement.textContent = senderLabel + ": " + data.text;
     }
 
-    messageElement.classList.add(data.sender === "Admin" || data.sender === adminId ? "own-message" : "other-message");
+    messageElement.classList.add(isLocal ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 
 
 
@@ -75,22 +76,13 @@ socket.on("chat_history", function (messages) {
 });
 
 
-
 socket.on("message_admin", function (data) {
-    console.log("Mensaje recibido en el admin:", data); // Verificar estructura
-
-    // Verificar si el mensaje ya fue mostrado localmente
-    const existingMessages = Array.from(chatBox.children);
-    const isDuplicate = existingMessages.some(msgEl => msgEl.textContent.includes(data.message.text) && msgEl.dataset.local === "true");
-
-    if (!isDuplicate && selectedChat === data.user_id) {
-         displayMessage({
+    if (selectedChat === data.user_id) {
+        displayMessage({
             text: data.message.text,
-            sender: data.message.sender,  // ✅ Usa el sender correcto
-            timestamp: data.message.timestamp
+            sender: data.message.sender,
+            timestamp: data.message.timestamp,
+            audio_url: data.message.audio_url || null
         });
     }
-
-}
-);
-
+});
