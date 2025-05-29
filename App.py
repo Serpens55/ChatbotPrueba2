@@ -55,14 +55,14 @@ nombres_usuarios = {}  # Mapea sid → nombre
 
 @socketio.on('register_name')
 def handle_register_name(data):
-    sid = request.sid
+    user_id = request.sid
     name = data.get('name', 'Invitado')
-    clientes_conectados[sid] = {'user_id': sid, 'name': name}
-    nombres_usuarios[sid] = name
-    emit('connected', {'user_id': sid, 'name': name})
+    clientes_conectados[user_id] = {'user_id': user_id, 'name': name}
+    nombres_usuarios[user_id] = name
+    emit('connected', {'user_id': user_id, 'name': name})
     # Enviamos la lista de nombres actualizada al admin
     emit('update_chat_list', [
-        {'sid': s, 'name': clientes_conectados[s]['name']}
+        {'user_id': s, 'name': clientes_conectados[s]['name']}
         for s in clientes_conectados
     ], broadcast=True)
 
@@ -70,17 +70,17 @@ def handle_register_name(data):
 @socketio.on('message')
 def handle_message(data):
     user_id = request.sid
-    name = clientes_conectados.get(sid, {}).get('name', 'Invitado')
+    name = clientes_conectados.get(user_id, {}).get('name', 'Invitado')
 
     msg = {
         'text': data['text'],
         'timestamp': time.strftime('%H:%M:%S'),
         'sender': name
     }
-    chats.setdefault(sid, []).append(msg)
+    chats.setdefault(user_id, []).append(msg)
 
-    emit('message', msg, room=sid)
-    emit('message_admin', {'user_id': sid, 'message': msg}, broadcast=True)
+    emit('message', msg, room=user_id)
+    emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
 
     # Emitir el mensaje del cliente al cliente y admin
     emit('message', msg, room=user_id)
