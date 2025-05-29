@@ -73,9 +73,11 @@ def handle_message(data):
     }
     chats.setdefault(user_id, []).append(msg)
 
-    # Emitir el mensaje del cliente al cliente y admin
+    # Solo una vez para el cliente
     emit('message', msg, room=user_id)
-    socketio.emit('message_admin', {'user_id': user_id, 'message': msg})
+
+    # Solo una vez para el admin
+    emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
 
     # Si el cliente escribe "Hola", responder con un audio
     if data['text'].strip().lower() == "hola":
