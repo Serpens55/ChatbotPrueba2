@@ -9,80 +9,75 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            Chat Cliente - <strong><span id="user-name">...</span></strong> | ID: <span id="user-id">...</span>
+            Chat Cliente - <strong><span id="user-name">...</span></strong>
+            <!-- ID oculto para el cliente -->
+            <span id="user-id" style="display: none;"></span>
         </div>
         <div class="chat-box" id="chat-box"></div>
         <div class="chat-input">
             <input type="text" id="message" placeholder="Escribe tu mensaje...">
             <button id="send">Enviar</button>
-        </div>        
+        </div>
+    </div>
+
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
         const socket = io();
-        let userName = "";
+        let userId = null;
+        let userName = null;
 
-        socket.on("connect", () => {
+        window.addEventListener("DOMContentLoaded", () => {
             userName = prompt("Ingresa tu nombre:");
-            if (userName) {
-                socket.emit("register_name", { name: userName });
-                document.getElementById("user-name").textContent = userName;
-            }
+            if (!userName) userName = "Invitado";
+
+            document.getElementById("user-name").textContent = userName;
+            socket.emit("register_name", { name: userName });
         });
 
-        socket.on("connected", (data) => {
-            document.getElementById("user-id").textContent = data.user_id;
+        socket.on("connected", function (data) {
+            userId = data.user_id;
+            // ID no se muestra al cliente
+            socket.emit("join");
         });
 
-        socket.on("message", (msg) => {
-            displayMessage(msg);
-        });
-
-        function displayMessage(msg) {
-            const chatBox = document.getElementById("chat-box");
-            const messageEl = document.createElement("div");
-
-            const isOwnMessage = msg.sender === userName;
-            const messageClass = isOwnMessage ? "own-message" : "other-message";
-
-            if (msg.audio_url) {
-                messageEl.innerHTML = `
-                    <div class="${messageClass}">
-                        <strong>${msg.sender}:</strong><br>
-                        <audio controls>
-                            <source src="${msg.audio_url}" type="audio/mpeg">
-                            Tu navegador no soporta el elemento de audio.
-                        </audio>
-                        <div class="timestamp">${msg.timestamp || ''}</div>
-                    </div>
-                `;
-            } else {
-                messageEl.innerHTML = `
-                    <div class="${messageClass}">
-                        <strong>${msg.sender}:</strong> ${msg.text}
-                        <div class="timestamp">${msg.timestamp || ''}</div>
-                    </div>
-                `;
-            }
-
-            chatBox.appendChild(messageEl);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        const sendButton = document.getElementById("send");
+        const chatBox = document.getElementById("chat-box");
         const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("send");
 
         sendButton.addEventListener("click", sendMessage);
         messageInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") sendMessage();
+            if (event.key === "Enter") {
+                sendMessage();
+            }
         });
 
         function sendMessage() {
-            const text = messageInput.value.trim();
-            if (text !== "") {
-                socket.emit("message", { text: text });
+            const message = messageInput.value.trim();
+            if (message !== "") {
+                socket.emit("message", { text: message });
                 messageInput.value = "";
             }
         }
+
+        socket.on("message", function (data) {
+            const messageElement = document.createElement("div");
+
+            if (data.audio_url) {
+                const button = document.createElement("button");
+                button.textContent = data.text || "Reproducir ▶";
+                button.addEventListener("click", () => {
+                    const audio = new Audio(data.audio_url);
+                    audio.play();
+                });
+                messageElement.appendChild(button);
+            } else {
+                messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
+            }
+
+            messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
     </script>
 </body>
 </html>

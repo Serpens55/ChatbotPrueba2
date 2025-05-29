@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,8 +17,10 @@
 
         <!-- Ventana de chat -->
         <div class="chat-window">
-            <div class="chat-header">Chat con <span id="selected-user">...</span>
-           <div class="chat-box" id="chat-box"></div>
+            <div class="chat-header">
+                Chat con <span id="selected-user">...</span> (<span id="selected-id">...</span>)
+            </div>
+            <div class="chat-box" id="chat-box"></div>
             <div class="chat-input">
                 <input type="text" id="admin-message" placeholder="Escribe un mensaje...">
                 <button id="send-admin">Enviar</button>
@@ -25,7 +28,7 @@
         </div>
     </div>
 
-    <!-- Socket.IO y lógica del administrador -->
+    <!-- Socket.IO y lÃ³gica del administrador -->
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='JS/admin.js') }}"></script>
 </body>

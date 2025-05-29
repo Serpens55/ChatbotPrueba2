@@ -48,7 +48,7 @@ function displayMessage(data, isLocal = false) {
         };
         messageElement.appendChild(button);
     } else {
-        messageElement.textContent = `${senderLabel}: ${data.text}`;
+        messageElement.textContent = ` ${senderLabel}: ${data.text}`;
     }
 
     messageElement.classList.add(senderIsAdmin ? "own-message" : "other-message");
@@ -62,11 +62,12 @@ socket.on("update_chat_list", function (clients) {
     clients.forEach(client => {
         const name = client.name || client.user_id;
         const clientElement = document.createElement("button");
-        clientElement.textContent = "Chat con " + name;
+        clientElement.textContent = "Chat con " + client.user_id;
         clientElement.classList.add("chat-button");
         clientElement.addEventListener("click", function () {
             selectedChat = client.user_id;
             document.getElementById("selected-user").textContent = name;
+            document.getElementById("selected-id").textContent = client.user_id;
             socket.emit("admin_select_chat", { user_id: selectedChat });
         });
         chatList.appendChild(clientElement);
