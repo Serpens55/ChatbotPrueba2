@@ -32,20 +32,22 @@ function sendMessage() {
 function displayMessage(data, isLocal = false) {
     const messageElement = document.createElement("div");
 
+    const senderIsAdmin = data.sender === "Admin" || data.sender === adminId;
+    const senderLabel = isLocal || senderIsAdmin ? "Tú" : data.sender;
+
     if (data.audio_url) {
         const button = document.createElement("button");
-        button.textContent = "Reproducir audio";
+        button.textContent = `${senderLabel}: Reproducir audio`;
         button.onclick = () => {
             const audio = new Audio(data.audio_url);
             audio.play();
         };
         messageElement.appendChild(button);
     } else {
-        const senderLabel = isLocal ? "Tú" : data.sender;
-        messageElement.textContent = senderLabel + ": " + data.text;
+        messageElement.textContent = `${senderLabel}: ${data.text}`;
     }
 
-    messageElement.classList.add(isLocal ? "own-message" : "other-message");
+    messageElement.classList.add(senderIsAdmin ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
