@@ -38,25 +38,36 @@
             displayMessage(msg);
         });
 
-        function displayMessage(msg) {
-            const chatBox = document.getElementById("chat-box");
-            const messageEl = document.createElement("div");
+function displayMessage(msg) {
+    const chatBox = document.getElementById("chat-box");
+    const messageEl = document.createElement("div");
 
-            if (msg.audio_url) {
-                messageEl.innerHTML = `
-                    <div><strong>${msg.sender}:</strong></div>
-                    <audio controls>
-                        <source src="${msg.audio_url}" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
-                `;
-            } else {
-                messageEl.textContent = `${msg.sender}: ${msg.text}`;
-            }
+    const isAdmin = msg.sender === 'admin' || msg.sender === 'Admin';
 
-            chatBox.appendChild(messageEl);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+    if (msg.audio_url) {
+        messageEl.innerHTML = `
+            <div class="${isAdmin ? 'other-message' : 'own-message'}">
+                <strong>${msg.sender}:</strong><br>
+                <audio controls>
+                    <source src="${msg.audio_url}" type="audio/mpeg">
+                    Tu navegador no soporta el elemento de audio.
+                </audio>
+                <div class="timestamp">${msg.timestamp || ''}</div>
+            </div>
+        `;
+    } else {
+        messageEl.innerHTML = `
+            <div class="${isAdmin ? 'other-message' : 'own-message'}">
+                <strong>${msg.sender}:</strong> ${msg.text}
+                <div class="timestamp">${msg.timestamp || ''}</div>
+            </div>
+        `;
+    }
+
+    chatBox.appendChild(messageEl);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 
         const sendButton = document.getElementById("send");
         const messageInput = document.getElementById("message");
