@@ -1,5 +1,12 @@
+let userName = prompt("Por favor, ingresa tu nombre:");
+if (!userName) userName = "Invitado";
+
 const socket = io();
 let userId = null;
+
+socket.on("connect", function () {
+    socket.emit("register_name", { name: userName });
+});
 
 socket.on("connected", function (data) {
     console.log("User connected with ID:", data.user_id);  // Añade un log para comprobar
@@ -41,10 +48,10 @@ socket.on("message", function (data) {
         messageElement.appendChild(button);
     } else {
         // Mensaje de texto normal
-        messageElement.textContent = (data.sender === "cliente" ? "Tú: " : "Admin: ") + data.text + " (" + data.timestamp + ")";
+           messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
     }
 
-    messageElement.classList.add(data.sender === "cliente" ? "own-message" : "other-message");
+    messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
