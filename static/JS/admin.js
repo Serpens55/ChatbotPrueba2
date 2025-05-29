@@ -56,12 +56,13 @@ function displayMessage(data, isLocal = false) {
 socket.on("update_chat_list", function (clients) {
     chatList.innerHTML = "";
     clients.forEach(client => {
+        const name = client.name || client.user_id;
         const clientElement = document.createElement("button");
-        clientElement.textContent = "Chat con " + (client.name || client.user_id);
+        clientElement.textContent = "Chat con " + name;
         clientElement.classList.add("chat-button");
         clientElement.addEventListener("click", function () {
             selectedChat = client.user_id;
-            document.getElementById("selected-user").textContent = client.name || client.user_id;
+            document.getElementById("selected-user").textContent = name;
             socket.emit("admin_select_chat", { user_id: selectedChat });
         });
         chatList.appendChild(clientElement);

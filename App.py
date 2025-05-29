@@ -25,15 +25,8 @@ def admin_page():
 
 @socketio.on('connect')
 def handle_connect():
-    # Generamos un ID único para cada cliente en cada conexión
-    user_id = str(uuid.uuid4())  # Generar un ID único usando uuid
-    session['user_id'] = user_id  # Guardamos el ID en la sesión de Flask (aunque no es ideal para WebSockets)
-
-    clientes_conectados[request.sid] = {'user_id': user_id}
-
-    # Emitimos el ID al cliente y la lista de usuarios conectados
     emit('connected', {'user_id': request.sid})
-    emit('update_chat_list', list(clientes_conectados.keys()), broadcast=True)
+
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -58,12 +51,14 @@ def handle_register_name(data):
     name = data.get('name', 'Invitado')
     user_id = request.sid
     clientes_conectados[user_id] = {'name': name}
-    print(f"Usuario conectado: {name} ({user_id})")
+
+    print(f"Usuario registrado: {name} ({user_id})")
 
     emit('update_chat_list', [
         {'user_id': uid, 'name': info['name']}
         for uid, info in clientes_conectados.items()
     ], broadcast=True)
+
 
 
 @socketio.on('message')
