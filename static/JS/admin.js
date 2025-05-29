@@ -3,28 +3,32 @@ const chatList = document.getElementById("chat-list");
 const chatBox = document.getElementById("chat-box");
 const messageInput = document.getElementById("admin-message");
 const sendButton = document.getElementById("send-admin");
-let selectedChat = null;
-let adminId = "admin"; // Identificador fijo para el administrador
 
+let selectedChat = null;
+let adminId = "Admin"; // Identificador fijo para el administrador
+
+// Enviar mensaje al presionar botón o Enter
 sendButton.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
+    if (event.key === "Enter") sendMessage();
 });
 
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "" && selectedChat) {
-        const messageData = { user_id: selectedChat, text: message, sender: adminId };
-        
-        // Mostrar mensaje inmediatamente en la interfaz
+        const messageData = {
+            user_id: selectedChat,
+            text: message,
+            sender: adminId
+        };
+
+        // Mostrar mensaje localmente
         displayMessage(messageData, true);
-        
-        // Enviar mensaje al servidor
+
+        // Enviar al servidor
         socket.emit("admin_message", messageData);
 
-        // Limpiar el campo de entrada
+        // Limpiar input
         messageInput.value = "";
     }
 }
@@ -37,7 +41,7 @@ function displayMessage(data, isLocal = false) {
 
     if (data.audio_url) {
         const button = document.createElement("button");
-        button.textContent = `${senderLabel}: Reproducir audio`;
+        button.textContent = ` ${senderLabel}: Reproducir audio`;
         button.onclick = () => {
             const audio = new Audio(data.audio_url);
             audio.play();
@@ -52,9 +56,7 @@ function displayMessage(data, isLocal = false) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-
-
-
+// Actualizar lista de clientes conectados
 socket.on("update_chat_list", function (clients) {
     chatList.innerHTML = "";
     clients.forEach(client => {
@@ -71,13 +73,13 @@ socket.on("update_chat_list", function (clients) {
     });
 });
 
-
+// Mostrar historial del chat seleccionado
 socket.on("chat_history", function (messages) {
     chatBox.innerHTML = "";
     messages.forEach(msg => displayMessage(msg));
 });
 
-
+// Mostrar nuevos mensajes del cliente o del sistema
 socket.on("message_admin", function (data) {
     if (selectedChat === data.user_id) {
         displayMessage({

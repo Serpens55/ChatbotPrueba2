@@ -1,4 +1,3 @@
-<!-- index.html - Interfaz de Cliente -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,24 +8,24 @@
 </head>
 <body>
     <div class="chat-container">
-        <div class="chat-header">Chat Cliente - ID: <span id="user-id">...</span></div>
+        <div class="chat-header">
+            Chat Cliente - <strong><span id="user-name">...</span></strong> | ID: <span id="user-id">...</span>
+        </div>
         <div class="chat-box" id="chat-box"></div>
         <div class="chat-input">
             <input type="text" id="message" placeholder="Escribe tu mensaje...">
             <button id="send">Enviar</button>
         </div>        
-    </div>
-
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-
+   cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
         const socket = io();
+        let userName = "";
 
         socket.on("connect", () => {
-            const name = prompt("Ingresa tu nombre:");
-            if (name) {
-                socket.emit("register_name", { name: name });
-                console.log("Nombre enviado al servidor:", name);
+            userName = prompt("Ingresa tu nombre:");
+            if (userName) {
+                socket.emit("register_name", { name: userName });
+                document.getElementById("user-name").textContent = userName;
             }
         });
 
@@ -38,36 +37,36 @@
             displayMessage(msg);
         });
 
-function displayMessage(msg) {
-    const chatBox = document.getElementById("chat-box");
-    const messageEl = document.createElement("div");
+        function displayMessage(msg) {
+            const chatBox = document.getElementById("chat-box");
+            const messageEl = document.createElement("div");
 
-    const isAdmin = msg.sender === 'admin' || msg.sender === 'Admin';
+            const isOwnMessage = msg.sender === userName;
+            const messageClass = isOwnMessage ? "own-message" : "other-message";
 
-    if (msg.audio_url) {
-        messageEl.innerHTML = `
-            <div class="${isAdmin ? 'other-message' : 'own-message'}">
-                <strong>${msg.sender}:</strong><br>
-                <audio controls>
-                    <source src="${msg.audio_url}" type="audio/mpeg">
-                    Tu navegador no soporta el elemento de audio.
-                </audio>
-                <div class="timestamp">${msg.timestamp || ''}</div>
-            </div>
-        `;
-    } else {
-        messageEl.innerHTML = `
-            <div class="${isAdmin ? 'other-message' : 'own-message'}">
-                <strong>${msg.sender}:</strong> ${msg.text}
-                <div class="timestamp">${msg.timestamp || ''}</div>
-            </div>
-        `;
-    }
+            if (msg.audio_url) {
+                messageEl.innerHTML = `
+                    <div class="${messageClass}">
+                        <strong>${msg.sender}:</strong><br>
+                        <audio controls>
+                            <source src="${msg.audio_url}" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                        <div class="timestamp">${msg.timestamp || ''}</div>
+                    </div>
+                `;
+            } else {
+                messageEl.innerHTML = `
+                    <div class="${messageClass}">
+                        <strong>${msg.sender}:</strong> ${msg.text}
+                        <div class="timestamp">${msg.timestamp || ''}</div>
+                    </div>
+                `;
+            }
 
-    chatBox.appendChild(messageEl);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
+            chatBox.appendChild(messageEl);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
 
         const sendButton = document.getElementById("send");
         const messageInput = document.getElementById("message");

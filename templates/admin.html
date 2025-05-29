@@ -8,19 +8,25 @@
 </head>
 <body>
     <div class="admin-container">
+        <!-- Barra lateral con lista de clientes -->
         <div class="chat-sidebar">
             <h3>Clientes Conectados</h3>
             <div class="chat-list" id="chat-list"></div>
         </div>
+
+        <!-- Ventana de chat -->
         <div class="chat-window">
-            <div class="chat-header">Chat con <span id="selected-user">...</span></div>
-            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-header">
+                Chat con <span id="selected-user">...</span>
+           ="chat-box" id="chat-box"></div>
             <div class="chat-input">
                 <input type="text" id="admin-message" placeholder="Escribe un mensaje...">
                 <button id="send-admin">Enviar</button>
             </div>
         </div>
     </div>
+
+    <!-- Socket.IO y lógica del administrador -->
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='JS/admin.js') }}"></script>
 </body>
