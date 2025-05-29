@@ -32,7 +32,7 @@ def handle_connect():
     clientes_conectados[request.sid] = {'user_id': user_id}
 
     # Emitimos el ID al cliente y la lista de usuarios conectados
-    emit('connected', {'user_id': user_id})
+    emit('connected', {'user_id': request.sid})
     emit('update_chat_list', list(clientes_conectados.keys()), broadcast=True)
 
 @socketio.on('disconnect')
@@ -55,15 +55,14 @@ nombres_usuarios = {}  # Mapea sid → nombre
 
 @socketio.on('register_name')
 def handle_register_name(data):
-    user_id = request.sid
     name = data.get('name', 'Invitado')
-    clientes_conectados[user_id] = {'user_id': user_id, 'name': name}
-    nombres_usuarios[user_id] = name
-    emit('connected', {'user_id': user_id, 'name': name})
-    # Enviamos la lista de nombres actualizada al admin
+    user_id = request.sid
+    clientes_conectados[user_id] = {'name': name}
+    print(f"Usuario conectado: {name} ({user_id})")
+
     emit('update_chat_list', [
-        {'user_id': s, 'name': clientes_conectados[s]['name']}
-        for s in clientes_conectados
+        {'user_id': uid, 'name': info['name']}
+        for uid, info in clientes_conectados.items()
     ], broadcast=True)
 
 

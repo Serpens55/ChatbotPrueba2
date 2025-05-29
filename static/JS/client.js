@@ -1,19 +1,24 @@
-let userName = prompt("Por favor, ingresa tu nombre:");
-if (!userName) userName = "Invitado";
-
 const socket = io();
 let userId = null;
+let userName = null;
 
 socket.on("connect", function () {
     socket.emit("register_name", { name: userName });
 });
 
+window.onload = function () {
+    userName = prompt("Ingresa tu nombre:");
+    if (!userName) userName = "Invitado";
+    
+    socket.emit("register_name", { name: userName });
+};
+
 socket.on("connected", function (data) {
-    console.log("User connected with ID:", data.user_id);  // Añade un log para comprobar
+    console.log("Conectado con ID:", data.user_id);
     userId = data.user_id;
     document.getElementById("user-id").textContent = userId;
     socket.emit("join");
-});
+}); 
 
 const chatBox = document.getElementById("chat-box");
 const messageInput = document.getElementById("message");

@@ -57,12 +57,12 @@ socket.on("update_chat_list", function (clients) {
     chatList.innerHTML = "";
     clients.forEach(client => {
         const clientElement = document.createElement("button");
-        clientElement.textContent = "Chat con " + client.name;
+        clientElement.textContent = "Chat con " + (client.name || client.user_id);
         clientElement.classList.add("chat-button");
         clientElement.addEventListener("click", function () {
-            selectedChat = client.sid;
-            document.getElementById("selected-user").textContent = client.name;
-            socket.emit("admin_select_chat", { user_id: client.sid });
+            selectedChat = client.user_id;
+            document.getElementById("selected-user").textContent = client.name || client.user_id;
+            socket.emit("admin_select_chat", { user_id: selectedChat });
         });
         chatList.appendChild(clientElement);
     });
