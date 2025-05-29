@@ -69,6 +69,7 @@ socket.on("update_chat_list", function (clients) {
     });
 });
 
+
 socket.on("chat_history", function (messages) {
     chatBox.innerHTML = "";
     messages.forEach(msg => displayMessage(msg));

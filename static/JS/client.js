@@ -36,6 +36,10 @@ function sendMessage() {
     if (message !== "") {
         socket.emit("message", { text: message }); // Solo enviamos el mensaje
         messageInput.value = ""; // Limpiamos el input después de enviarlo
+
+        socket.emit("register_name", { name: name });
+        console.log("Nombre enviado al servidor:", name);
+
     }
 }
 
