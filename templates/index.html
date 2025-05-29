@@ -14,29 +14,65 @@
         <div class="chat-input">
             <input type="text" id="message" placeholder="Escribe tu mensaje...">
             <button id="send">Enviar</button>
-        </div>
-        <script>
-    const socket = io();
-
-    socket.on("connect", () => {
-        const name = prompt("Ingresa tu nombre:");
-        if (name) {
-            socket.emit("register_name", { name: name });
-        }
-    });
-
-    socket.on("connected", (data) => {
-        console.log("Conectado con ID:", data.user_id);
-    });
-
-    socket.on("message", (msg) => {
-        console.log("Mensaje recibido:", msg);
-        displayMessage(msg);
-    });
-    </script>
-
+        </div>        
     </div>
+
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script src="{{ url_for('static', filename='JS/client.js') }}"></script>
+
+    <script>
+        const socket = io();
+
+        socket.on("connect", () => {
+            const name = prompt("Ingresa tu nombre:");
+            if (name) {
+                socket.emit("register_name", { name: name });
+                console.log("Nombre enviado al servidor:", name);
+            }
+        });
+
+        socket.on("connected", (data) => {
+            document.getElementById("user-id").textContent = data.user_id;
+        });
+
+        socket.on("message", (msg) => {
+            displayMessage(msg);
+        });
+
+        function displayMessage(msg) {
+            const chatBox = document.getElementById("chat-box");
+            const messageEl = document.createElement("div");
+
+            if (msg.audio_url) {
+                messageEl.innerHTML = `
+                    <div><strong>${msg.sender}:</strong></div>
+                    <audio controls>
+                        <source src="${msg.audio_url}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                `;
+            } else {
+                messageEl.textContent = `${msg.sender}: ${msg.text}`;
+            }
+
+            chatBox.appendChild(messageEl);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        const sendButton = document.getElementById("send");
+        const messageInput = document.getElementById("message");
+
+        sendButton.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") sendMessage();
+        });
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (text !== "") {
+                socket.emit("message", { text: text });
+                messageInput.value = "";
+            }
+        }
+    </script>
 </body>
 </html>
