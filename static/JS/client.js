@@ -13,6 +13,16 @@ window.onload = function () {
     socket.emit("register_name", { name: userName });
 };
 
+window.addEventListener("DOMContentLoaded", () => {
+    userName = prompt("Ingresa tu nombre:");
+    if (!userName) userName = "Invitado";
+
+    document.getElementById("user-name").textContent = userName;
+
+    // Registrar el nombre con el servidor
+    socket.emit("register_name", { name: userName });
+});
+
 socket.on("connected", function (data) {
     console.log("Conectado con ID:", data.user_id);
     userId = data.user_id;
