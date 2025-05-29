@@ -58,9 +58,15 @@ function displayMessage(data) {
 socket.on("update_chat_list", function (clients) {
     chatList.innerHTML = "";
     clients.forEach(client => {
-        const name = client.name || client.user_id;
+        const name = client.name || "Invitado";
         const clientElement = document.createElement("button");
-        clientElement.textContent = "Chat con " + client.user_id;
+
+        // Mostrar nombre + ID
+        clientElement.innerHTML = `
+            <strong>${name}</strong><br>
+            <small>ID: ${client.user_id}</small>
+        `;
+
         clientElement.classList.add("chat-button");
         clientElement.addEventListener("click", function () {
             selectedChat = client.user_id;
