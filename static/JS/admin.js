@@ -85,7 +85,7 @@ socket.on("message_admin", function (data) {
     const isDuplicate = existingMessages.some(msgEl => msgEl.textContent.includes(data.message.text) && msgEl.dataset.local === "true");
 
     if (!isDuplicate && selectedChat === data.user_id) {
-        displayMessage({ text: data.message.text, sender: adminId });
+        displayMessage(data.message);
     }
 
 }
