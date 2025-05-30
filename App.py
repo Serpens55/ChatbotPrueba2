@@ -141,8 +141,13 @@ def handle_submenu_option(data):
         emit('show_link', {'label': label, 'link': 'https://ejemplo.com/ambar-alumnos'}, room=user_id)
     elif label == "Ámbar Inglés":
         emit('show_link', {'label': label, 'link': 'https://ejemplo.com/ambar-ingles'}, room=user_id)
-    elif label.startswith("Novedades"):
-        emit('show_link', {'label': f"Título de {label}", 'link': f'https://ejemplo.com/{label.lower()}'}, room=user_id)
+    elif label.startswith("Novedades1"):
+        emit('show_link', {'label': f"Título de {label}", 'link': f'https://www.culiacan.tecnm.mx/se-realiza-con-exito-el-evento-ingeniatec-2025-en-la-extension-navolato-del-itc/'}, room=user_id)
+    elif label.startswith("Novedades2"):
+        emit('show_link', {'label': f"Título de {label}", 'link': f'https://www.culiacan.tecnm.mx/conoce-el-proceso-de-carga-para-los-cursos-de-verano-2025/'}, room=user_id)
+    elif label.startswith("Novedades3"):
+        emit('show_link', {'label': f"Título de {label}", 'link': f'https://www.culiacan.tecnm.mx/estudiantes-de-ingenieria-mecanica-desarrollan-biodigestor-para-generar-gas-metano-como-combustible/'}, room=user_id)  
+
     elif label.startswith("Convocatoria"):
         emit('show_image_link', {
             'label': label,
