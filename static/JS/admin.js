@@ -23,10 +23,7 @@ function sendMessage() {
             sender: adminId
         };
 
-        // Enviar al servidor (ya no mostramos localmente aquí)
         socket.emit("admin_message", messageData);
-
-        // Limpiar input
         messageInput.value = "";
     }
 }
@@ -61,7 +58,6 @@ socket.on("update_chat_list", function (clients) {
         const name = client.name || "Invitado";
         const clientElement = document.createElement("button");
 
-        // Mostrar nombre + ID
         clientElement.innerHTML = `
             <strong>${name}</strong><br>
             <small>ID: ${client.user_id}</small>
@@ -93,5 +89,16 @@ socket.on("message_admin", function (data) {
             timestamp: data.message.timestamp,
             audio_url: data.message.audio_url || null
         });
+    }
+});
+
+// Mostrar interacciones del cliente con el menú
+socket.on("menu_interaction", function (data) {
+    if (selectedChat === data.user_id) {
+        const message = {
+            text: `El cliente seleccionó: ${data.selection}`,
+            sender: "Asistente"
+        };
+        displayMessage(message);
     }
 });

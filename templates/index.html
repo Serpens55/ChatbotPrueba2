@@ -10,7 +10,6 @@
     <div class="chat-container">
         <div class="chat-header">
             Chat Cliente - <strong><span id="user-name">...</span></strong>
-            <!-- ID oculto para el cliente -->
             <span id="user-id" style="display: none;"></span>
         </div>
         <div class="chat-box" id="chat-box"></div>
@@ -36,7 +35,6 @@
 
         socket.on("connected", function (data) {
             userId = data.user_id;
-            // ID no se muestra al cliente
             socket.emit("join");
         });
 
@@ -46,15 +44,17 @@
 
         sendButton.addEventListener("click", sendMessage);
         messageInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
+            if (event.key === "Enter") sendMessage();
         });
 
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message !== "") {
-                socket.emit("message", { text: message });
+                if (message.toLowerCase() === "menu") {
+                    socket.emit("message", { text: "menu" });
+                } else {
+                    socket.emit("message", { text: message });
+                }
                 messageInput.value = "";
             }
         }
@@ -76,6 +76,37 @@
 
             messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
             chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        socket.on("show_menu", () => {
+            const menuContainer = document.createElement("div");
+            menuContainer.classList.add("other-message");
+
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = `Opción ${i}`;
+                btn.onclick = () => {
+                    socket.emit("menu_option_selected", { option: String(i) });
+                };
+                menuContainer.appendChild(btn);
+            }
+
+            chatBox.appendChild(menuContainer);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        socket.on("show_submenu", (data) => {
+            const submenuContainer = document.createElement("div");
+            submenuContainer.classList.add("other-message");
+
+            data.submenu.forEach((label) => {
+                const btn = document.createElement("button");
+                btn.textContent = label;
+                submenuContainer.appendChild(btn);
+            });
+
+            chatBox.appendChild(submenuContainer);
             chatBox.scrollTop = chatBox.scrollHeight;
         });
     </script>

@@ -1,3 +1,4 @@
+
 /* Fuente general y fondo */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -189,4 +190,46 @@ body {
     border: 1px solid #ccc;
     text-align: left;
     font-size: 14px;
+}
+
+/* ---------------------- */
+/* BOTONES DE MENÚ Y SUBMENÚ */
+/* ---------------------- */
+
+.menu-button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.submenu-button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #28a745;
+    color: #28a745;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.submenu-button:hover {
+    background-color: #28a745;
+    color: white;
 }
