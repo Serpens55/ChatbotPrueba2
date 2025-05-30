@@ -1,3 +1,4 @@
+
 from gevent import monkey
 monkey.patch_all()
 
@@ -71,33 +72,83 @@ def handle_message(data):
 
     emit('message', msg, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
-    
+
     if text == "hola":
         enviar_audio(user_id, 'hola.mp3')
-    elif text == "contacta con un administrador":
-        enviar_audio(user_id, 'contactoadmin.mp3')
-    elif text == "gracias":
-        enviar_audio(user_id, 'agradecimiento.mp3')
+        bienvenida = {
+            'text': "Un saludo amigo, yo soy Cientibot, tu asistente virtual. ¿En qué puedo ayudarte?",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(bienvenida)
+        emit('message', bienvenida, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
 @socketio.on('menu_option_selected')
 def handle_menu_option(data):
     user_id = request.sid
     option = data.get('option')
 
-    submenus = {
-        "1": ["Ambar", "Novedades", "Convocatorias","Mapa"],
-    }
+    if option == "1":  # Ámbar
+        submenu = ["Ámbar Alumnos", "Ámbar Inglés"]
+        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
 
-    submenu = submenus.get(option, [])
+    elif option == "2":  # Novedades
+        bienvenida = {
+            'text': "Estas son las novedades de hoy:",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(bienvenida)
+        emit('message', bienvenida, room=user_id)
 
-    # Enviar submenú al cliente
-    emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
+        submenu = ["Novedades1", "Novedades2", "Novedades3"]
+        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
 
-    # Notificar al administrador que el cliente interactuó con el menú
+    elif option == "3":  # Convocatorias
+        bienvenida = {
+            'text': "Estas son las convocatorias que tenemos disponibles en este momento:",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(bienvenida)
+        emit('message', bienvenida, room=user_id)
+
+        submenu = ["Convocatoria1", "Convocatoria2", "Convocatoria3"]
+        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
+
+    elif option == "4":  # Mapa
+        mensaje = {
+            'text': "Aquí tienes el mapa de las instalaciones:",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(mensaje)
+        emit('message', mensaje, room=user_id)
+        emit('show_map', {'image': '/static/img/mapa.jpg'}, room=user_id)
+
     emit('menu_interaction', {
         'user_id': user_id,
         'selection': f"Opción {option}"
     }, broadcast=True)
+
+@socketio.on('submenu_option_selected')
+def handle_submenu_option(data):
+    user_id = request.sid
+    label = data.get('label')
+
+    if label == "Ámbar Alumnos":
+        emit('show_link', {'label': label, 'link': 'https://ejemplo.com/ambar-alumnos'}, room=user_id)
+    elif label == "Ámbar Inglés":
+        emit('show_link', {'label': label, 'link': 'https://ejemplo.com/ambar-ingles'}, room=user_id)
+    elif label.startswith("Novedades"):
+        emit('show_link', {'label': f"Título de {label}", 'link': f'https://ejemplo.com/{label.lower()}'}, room=user_id)
+    elif label.startswith("Convocatoria"):
+        emit('show_image_link', {
+            'label': label,
+            'image': f'/static/img/{label.lower()}.jpg',
+            'link': f'https://ejemplo.com/{label.lower()}'
+        }, room=user_id)
 
 def enviar_audio(user_id, archivo):
     audio_msg = {
