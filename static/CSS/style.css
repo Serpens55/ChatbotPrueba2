@@ -233,3 +233,41 @@ body {
     background-color: #28a745;
     color: white;
 }
+
+/* Contenedor de menú y submenús */
+.menu-container,
+.submenu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px 0;
+}
+
+/* Mensaje encima del menú */
+.menu-message {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #333;
+}
+
+/* Botones del menú principal */
+.menu-button,
+.submenu-button {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-button:hover,
+.submenu-button:hover {
+    background-color: #0056b3;
+}

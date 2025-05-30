@@ -54,7 +54,12 @@ socket.on("message", function (data) {
 
 socket.on("show_menu", () => {
     const menuContainer = document.createElement("div");
-    menuContainer.classList.add("other-message");
+    menuContainer.classList.add("other-message", "menu-container");
+
+    const message = document.createElement("div");
+    message.classList.add("menu-message");
+    message.textContent = "Mensaje de prueba que va antes del menú:";
+    menuContainer.appendChild(message);
 
     for (let i = 1; i <= 4; i++) {
         const btn = document.createElement("button");
@@ -72,7 +77,12 @@ socket.on("show_menu", () => {
 
 socket.on("show_submenu", (data) => {
     const submenuContainer = document.createElement("div");
-    submenuContainer.classList.add("other-message");
+    submenuContainer.classList.add("other-message", "submenu-container");
+
+    const message = document.createElement("div");
+    message.classList.add("menu-message");
+    message.textContent = `Opciones disponibles para ${data.option}:`;
+    submenuContainer.appendChild(message);
 
     data.submenu.forEach((label) => {
         const btn = document.createElement("button");
@@ -84,3 +94,4 @@ socket.on("show_submenu", (data) => {
     chatBox.appendChild(submenuContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+ 
