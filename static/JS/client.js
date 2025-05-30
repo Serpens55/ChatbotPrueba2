@@ -36,6 +36,13 @@ socket.on("message", function (data) {
     const messageElement = document.createElement("div");
 
     if (data.audio_url) {
+        
+   if (data.text) {
+            const text = document.createElement("span");
+            text.textContent = senderLabel + ": " + data.text + " ";
+            messageElement.appendChild(text);
+        }
+
         const button = document.createElement("button");
         button.textContent = data.text || "Reproducir ▶";
         button.addEventListener("click", () => {

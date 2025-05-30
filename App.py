@@ -72,6 +72,16 @@ def handle_message(data):
     emit('message', msg, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
 
+    if data['text'].strip().lower() == "hola":
+        audio_msg = {
+        'text': 'Hola, yo soy Cientibot ¿en qué puedo ayudarte?',  # <-- Texto que se mostrará al lado del botón
+        'audio_url': '/static/audio/hola.mp3',
+        'timestamp': time.strftime('%H:%M:%S'),
+        'sender': 'admin'
+    }
+    chats[user_id].append(audio_msg)
+
+
     if text == "hola":
         enviar_audio(user_id, 'hola.mp3')
     elif text == "contacta con un administrador":
