@@ -238,21 +238,25 @@ body {
 /* ---------------------- */
 
 a.submenu-button {
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
     background-color: #007bff;
     color: white;
-    padding: 10px 12px;
+    border: none;
     border-radius: 6px;
-    margin: 5px 0;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
     transition: background-color 0.3s;
+    box-sizing: border-box;
 }
 
 a.submenu-button:hover {
     background-color: #0056b3;
 }
-
 /* ---------------------- */
 /* IMÁGENES EN EL CHAT */
 /* ---------------------- */
@@ -264,4 +268,3 @@ img {
     height: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-    
