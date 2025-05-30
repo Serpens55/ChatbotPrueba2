@@ -172,19 +172,19 @@ def handle_submenu_option(data):
 
     elif label.startswith("Convocatoria1"):
         emit('show_image_link', {
-            'label': label,
+            'label': 'Convocatoria abierta de plazas docentes febrero 2025',
             'image': f'/static/img/conv1.png',
             'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-de-plazas-docentes-febrero-2025/'
         }, room=user_id)
     elif label.startswith("Convocatoria2"):
         emit('show_image_link', {
-            'label': label,
+            'label': 'Convocatoria abierta no docente',
             'image': f'/static/img/conv2.png',
             'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-no-docente/'
         }, room=user_id)        
     elif label.startswith("Convocatoria3"):
         emit('show_image_link', {
-            'label': label,
+            'label': 'Convocatorias cerradas plazas administrativas 2025',
             'image': f'/static/img/conv3.png',
             'link': f'https://www.culiacan.tecnm.mx/convocatorias-cerradas-plazas-administrativas-febrero-2025/'
         }, room=user_id)
