@@ -71,17 +71,7 @@ def handle_message(data):
 
     emit('message', msg, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': msg}, broadcast=True)
-
-    if data['text'].strip().lower() == "hola":
-        audio_msg = {
-        'text': 'Hola, yo soy Cientibot ¿en qué puedo ayudarte?',  # <-- Texto que se mostrará al lado del botón
-        'audio_url': '/static/audio/hola.mp3',
-        'timestamp': time.strftime('%H:%M:%S'),
-        'sender': 'admin'
-    }
-    chats[user_id].append(audio_msg)
-
-
+    
     if text == "hola":
         enviar_audio(user_id, 'hola.mp3')
     elif text == "contacta con un administrador":
@@ -95,10 +85,7 @@ def handle_menu_option(data):
     option = data.get('option')
 
     submenus = {
-        "1": ["Subopción 1.1", "Subopción 1.2", "Subopción 1.3"],
-        "2": ["Subopción 2.1", "Subopción 2.2"],
-        "3": ["Subopción 3.1", "Subopción 3.2", "Subopción 3.3"],
-        "4": ["Subopción 4.1"]
+        "1": ["Ambar", "Novedades", "Convocatorias","Mapa"],
     }
 
     submenu = submenus.get(option, [])

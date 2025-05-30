@@ -84,9 +84,9 @@
             const menuContainer = document.createElement("div");
             menuContainer.classList.add("other-message");
 
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 1; i++) {
                 const btn = document.createElement("button");
-                btn.textContent = `Opción ${i}`;
+                btn.textContent = `Abrir Menu`;
                 btn.classList.add("menu-button"); 
                 btn.onclick = () => {
                     socket.emit("menu_option_selected", { option: String(i) });
