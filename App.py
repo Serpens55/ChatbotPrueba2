@@ -170,11 +170,23 @@ def handle_submenu_option(data):
     elif label.startswith("Novedades3"):
         emit('show_link', {'label': f"Estudiantes  de ingenieria desarrollan biodigestor", 'link': f'https://www.culiacan.tecnm.mx/estudiantes-de-ingenieria-mecanica-desarrollan-biodigestor-para-generar-gas-metano-como-combustible/'}, room=user_id)  
 
-    elif label.startswith("Convocatoria"):
+    elif label.startswith("Convocatoria1"):
         emit('show_image_link', {
             'label': label,
-            'image': f'/static/img/{label.lower()}.jpg',
-            'link': f'https://ejemplo.com/{label.lower()}'
+            'image': f'/static/img/conv1.png',
+            'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-de-plazas-docentes-febrero-2025/'
+        }, room=user_id)
+    elif label.startswith("Convocatoria2"):
+        emit('show_image_link', {
+            'label': label,
+            'image': f'/static/img/conv2.png',
+            'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-no-docente/'
+        }, room=user_id)        
+    elif label.startswith("Convocatoria3"):
+        emit('show_image_link', {
+            'label': label,
+            'image': f'/static/img/conv3.png',
+            'link': f'https://www.culiacan.tecnm.mx/convocatorias-cerradas-plazas-administrativas-febrero-2025/'
         }, room=user_id)
 
 def enviar_audio(user_id, archivo):
