@@ -84,6 +84,28 @@ def handle_message(data):
         emit('message', bienvenida, room=user_id)
         emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
+    if text == "contacta con un administrador":
+        enviar_audio(user_id, 'contactoadmin.mp3')
+        bienvenida = {
+            'text': "Espera un momento, seras contactado con un administrador en unos segundos para que pueda atenderte",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(bienvenida)
+        emit('message', bienvenida, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
+
+    if text == "gracias":
+        enviar_audio(user_id, 'agradecimiento.mp3')
+        bienvenida = {
+            'text': "Ha sido un placer ser de ayuda, espero estes satisfecho.",
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Asistente'
+        }
+        chats[user_id].append(bienvenida)
+        emit('message', bienvenida, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
+
 @socketio.on('menu_option_selected')
 def handle_menu_option(data):
     user_id = request.sid
