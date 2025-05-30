@@ -65,6 +65,7 @@
             if (data.audio_url) {
                 const button = document.createElement("button");
                 button.textContent = data.text || "Reproducir ▶";
+                button.classList.add("menu-button");
                 button.addEventListener("click", () => {
                     const audio = new Audio(data.audio_url);
                     audio.play();
