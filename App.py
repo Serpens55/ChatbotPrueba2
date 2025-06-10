@@ -65,7 +65,7 @@ def handle_register_name(data):
 
     # Mensaje de audio de bienvenida (usa tu archivo de audio aquí)
     audio_bienvenida = {
-        'audio_url': '/static/audio/inicio.mp3',  # Asegúrate de tener este archivo
+        'audio_url': '/static/audio/bienvenida.mp3',  # Asegúrate de tener este archivo
         'timestamp': time.strftime('%H:%M:%S'),
         'sender': 'Cientibot'
     }
