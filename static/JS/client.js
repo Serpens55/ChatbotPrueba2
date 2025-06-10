@@ -106,6 +106,34 @@ socket.on("show_submenu", (data) => {
     chatBox.scrollTop = chatBox.scrollHeight;
 });
  
+function displayInteractiveMenu(options, level = 0) {
+    const container = document.createElement("div");
+    container.classList.add("menu-options");
+
+    options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option.label;
+        button.classList.add("menu-button");
+        button.onclick = () => {
+            // Mostrar el flujo de navegación
+            const history = document.createElement("div");
+            history.textContent = "> " + option.label;
+            history.classList.add("menu-path");
+            chatBox.appendChild(history);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            if (option.children) {
+                displayInteractiveMenu(option.children, level + 1);
+            } else if (option.callback) {
+                option.callback();
+            }
+        };
+        container.appendChild(button);
+    });
+
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
 
 
