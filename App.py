@@ -135,6 +135,20 @@ def handle_message(data):
         emit('message', bienvenida, room=user_id)
         emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
+    if data['text'].strip().lower() == "menu1":
+        welcome_msg = {
+            'text': 'Selecciona una opción:',
+            'timestamp': time.strftime('%H:%M:%S'),
+            'sender': 'Cientibot'
+        }
+        chats[user_id].append(welcome_msg)
+        emit('message', welcome_msg, room=user_id)
+        emit('message_admin', {'user_id': user_id, 'message': welcome_msg}, broadcast=True)
+
+        # Instrucción para el cliente para mostrar el menú raíz
+        emit('show_menu', {'options': ["Ambar", "Novedades", "Convocatorias", "Mapa"]}, room=user_id)
+
+
 @socketio.on('menu_option_selected')
 def handle_menu_option(data):
     user_id = request.sid
@@ -272,3 +286,6 @@ def handle_admin_message(data):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
+
+
+
