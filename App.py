@@ -48,10 +48,39 @@ def handle_register_name(data):
     name = data.get('name', 'Invitado')
     user_id = request.sid
     clientes_conectados[user_id] = {'name': name}
+
+    print(f"Usuario registrado: {name} ({user_id})")
+
     emit('update_chat_list', [
         {'user_id': uid, 'name': info['name']}
         for uid, info in clientes_conectados.items()
     ], broadcast=True)
+
+    # Mensaje de bienvenida de Cientibot
+    bienvenida = {
+        'text': f'Hola {name}, yo soy Cientibot. Para empezar, escriba "Menu" para abrir el menú interactivo 🚀',
+        'timestamp': time.strftime('%H:%M:%S'),
+        'sender': 'Cientibot'
+    }
+
+    # Mensaje de audio de bienvenida (usa tu archivo de audio aquí)
+    audio_bienvenida = {
+        'audio_url': '/static/audio/inicio.mp3',  # Asegúrate de tener este archivo
+        'timestamp': time.strftime('%H:%M:%S'),
+        'sender': 'Cientibot'
+    }
+
+    # Guardar en historial
+    chats.setdefault(user_id, []).extend([bienvenida, audio_bienvenida])
+
+    # Enviar ambos mensajes al cliente
+    emit('message', bienvenida, room=user_id)
+    emit('message', audio_bienvenida, room=user_id)
+
+    # También enviar al administrador
+    emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
+    emit('message_admin', {'user_id': user_id, 'message': audio_bienvenida}, broadcast=True)
+
 
 @socketio.on('message')
 def handle_message(data):
@@ -172,6 +201,7 @@ def handle_register_name(data):
         'timestamp': time.strftime('%H:%M:%S'),
         'sender': 'Cientibot'
     }
+    
     chats.setdefault(user_id, []).append(bienvenida)
     emit('message', bienvenida, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
