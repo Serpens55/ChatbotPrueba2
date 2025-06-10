@@ -154,6 +154,29 @@ def handle_menu_option(data):
         'selection': f"Opción {option}"
     }, broadcast=True)
 
+@socketio.on('register_name')
+def handle_register_name(data):
+    name = data.get('name', 'Invitado')
+    user_id = request.sid
+    clientes_conectados[user_id] = {'name': name}
+
+    print(f"Usuario registrado: {name} ({user_id})")
+
+    emit('update_chat_list', [
+        {'user_id': uid, 'name': info['name']}
+        for uid, info in clientes_conectados.items()
+    ], broadcast=True)
+        # Enviar mensaje de bienvenida al cliente
+    bienvenida = {
+        'text': f'Hola {name}, yo soy Cientibot. Para empezar, escriba "Menu" para abrir el menú interactivo 🚀',
+        'timestamp': time.strftime('%H:%M:%S'),
+        'sender': 'Cientibot'
+    }
+    chats.setdefault(user_id, []).append(bienvenida)
+    emit('message', bienvenida, room=user_id)
+    emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
+
+
 @socketio.on('submenu_option_selected')
 def handle_submenu_option(data):
     user_id = request.sid
