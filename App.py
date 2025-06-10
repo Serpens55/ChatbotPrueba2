@@ -135,7 +135,7 @@ def handle_message(data):
         emit('message', bienvenida, room=user_id)
         emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
-    if data['text'].strip().lower() == "menudos":
+    if data['text'].strip().lower() == "menu1":
         welcome_msg = {
             'text': 'Selecciona una opción:',
             'timestamp': time.strftime('%H:%M:%S'),
