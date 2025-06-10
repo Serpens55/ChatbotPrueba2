@@ -2,15 +2,6 @@ const socket = io();
 let userId = null;
 let userName = null;
 
-const menuStructure = {
-  "Menu": ["Ambar", "Novedades", "Convocatorias", "Mapa"],
-  "Ambar": ["Ambar Alumnos", "Ambar Ingles"],
-  "Novedades": ["Novedad 1", "Novedad 2", "Novedad 3"],
-  "Convocatorias": ["Convocatoria 1", "Convocatoria 2", "Convocatoria 3"]
-};
-
-let menuStack = [];
-
 window.addEventListener("DOMContentLoaded", () => {
     userName = prompt("Ingresa tu nombre:");
     if (!userName) userName = "Invitado";
@@ -106,75 +97,3 @@ socket.on("show_submenu", (data) => {
     chatBox.scrollTop = chatBox.scrollHeight;
 });
  
-function displayInteractiveMenu(options, level = 0) {
-    const container = document.createElement("div");
-    container.classList.add("menu-options");
-
-    options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option.label;
-        button.classList.add("menu-button");
-        button.onclick = () => {
-            // Mostrar el flujo de navegación
-            const history = document.createElement("div");
-            history.textContent = "> " + option.label;
-            history.classList.add("menu-path");
-            chatBox.appendChild(history);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            if (option.children) {
-                displayInteractiveMenu(option.children, level + 1);
-            } else if (option.callback) {
-                option.callback();
-            }
-        };
-        container.appendChild(button);
-    });
-
-    chatBox.appendChild(container);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-
-
-function renderMenu(options) {
-  const chatBox = document.getElementById("chat-box");
-  const menuContainer = document.createElement("div");
-  menuContainer.classList.add("menu-container");
-
-  options.forEach(option => {
-    const button = document.createElement("button");
-    button.textContent = option;
-    button.classList.add("menu-button");
-    button.onclick = () => handleMenuSelection(option);
-    menuContainer.appendChild(button);
-  });
-
-  chatBox.appendChild(menuContainer);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function handleMenuSelection(option) {
-  menuStack.push(option);
-  displayMessage({ text: `Seleccionaste: ${option}`, sender: "Tú" });
-
-  if (option === "Mapa") {
-    displayImage("/static/imagenes/mapa.jpg");
-  } else if (menuStructure[option]) {
-    renderMenu(menuStructure[option]);
-  } else {
-    socket.emit("message", { text: option });
-  }
-}
-
-function displayImage(src) {
-  const chatBox = document.getElementById("chat-box");
-  const img = document.createElement("img");
-  img.src = src;
-  img.style.maxWidth = "100%";
-  chatBox.appendChild(img);
-}
-
-socket.on("show_menu", function(data) {
-  renderMenu(data.options);
-});
