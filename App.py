@@ -135,54 +135,6 @@ def handle_message(data):
         emit('message', bienvenida, room=user_id)
         emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
-@socketio.on('menu_option_selected')
-def handle_menu_option(data):
-    user_id = request.sid
-    option = data.get('option')
-
-    if option == "1":  # Ámbar
-        submenu = ["Ámbar Alumnos", "Ámbar Inglés"]
-        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
-
-    elif option == "2":  # Novedades
-        bienvenida = {
-            'text': "Estas son las novedades de hoy:",
-            'timestamp': time.strftime('%H:%M:%S'),
-            'sender': 'Asistente'
-        }
-        chats[user_id].append(bienvenida)
-        emit('message', bienvenida, room=user_id)
-
-        submenu = ["Novedades1", "Novedades2", "Novedades3"]
-        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
-
-    elif option == "3":  # Convocatorias
-        bienvenida = {
-            'text': "Estas son las convocatorias que tenemos disponibles en este momento:",
-            'timestamp': time.strftime('%H:%M:%S'),
-            'sender': 'Asistente'
-        }
-        chats[user_id].append(bienvenida)
-        emit('message', bienvenida, room=user_id)
-
-        submenu = ["Convocatoria1", "Convocatoria2", "Convocatoria3"]
-        emit('show_submenu', {'option': option, 'submenu': submenu}, room=user_id)
-
-    elif option == "4":  # Mapa
-        mensaje = {
-            'text': "Aquí tienes el mapa de las instalaciones:",
-            'timestamp': time.strftime('%H:%M:%S'),
-            'sender': 'Asistente'
-        }
-        chats[user_id].append(mensaje)
-        emit('message', mensaje, room=user_id)
-        emit('show_map', {'image': '/static/img/mapa.png'}, room=user_id)
-
-    emit('menu_interaction', {
-        'user_id': user_id,
-        'selection': f"Opción {option}"
-    }, broadcast=True)
-
 @socketio.on('register_name')
 def handle_register_name(data):
     name = data.get('name', 'Invitado')
@@ -206,41 +158,6 @@ def handle_register_name(data):
     emit('message', bienvenida, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': bienvenida}, broadcast=True)
 
-
-@socketio.on('submenu_option_selected')
-def handle_submenu_option(data):
-    user_id = request.sid
-    label = data.get('label')
-
-    if label == "Ámbar Alumnos":
-        emit('show_link', {'label': label, 'link': 'https://culiacan.ambar.tecnm.mx/auth/Account/Login?ReturnUrl=%2Fauth%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Destudiantes-spa%26redirect_uri%3Dhttps%3A%2F%2Fculiacan.ambar.tecnm.mx%2Festudiantes%2Foidc-callback%26response_type%3Dcode%26scope%3Dopenid%20profile%20api-planteles%20api-escolares%20offline_access%26state%3D3617484454ef473bbc348d742c7706f2%26code_challenge%3DBrjSrHqYVowU7OV3VQLHVKrNnLbqbYktGjjGiBBNhdA%26code_challenge_method%3DS256%26response_mode%3Dquery'}, room=user_id)
-    elif label == "Ámbar Inglés":
-        emit('show_link', {'label': label, 'link': 'https://culiacan.ambar.tecnm.mx/auth/Account/Login?ReturnUrl=%2Fauth%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Destudiantes-spa%26redirect_uri%3Dhttps%3A%2F%2Fculiacan.ambar.tecnm.mx%2Festudiantes%2Foidc-callback%26response_type%3Dcode%26scope%3Dopenid%20profile%20api-planteles%20api-escolares%20offline_access%26state%3Dba41363f5e754f43b947700513e51d0e%26code_challenge%3D5TK7QinRwgvTRRqc49ueqOifCl7e3Zg3fEr4g4O3Ln8%26code_challenge_method%3DS256%26response_mode%3Dquery'}, room=user_id)
-    elif label.startswith("Novedades1"):
-        emit('show_link', {'label': f"Evento Ingeniatec 2025", 'link': f'https://www.culiacan.tecnm.mx/se-realiza-con-exito-el-evento-ingeniatec-2025-en-la-extension-navolato-del-itc/'}, room=user_id)
-    elif label.startswith("Novedades2"):
-        emit('show_link', {'label': f"Proceso de carga de cursos de verano", 'link': f'https://www.culiacan.tecnm.mx/conoce-el-proceso-de-carga-para-los-cursos-de-verano-2025/'}, room=user_id)
-    elif label.startswith("Novedades3"):
-        emit('show_link', {'label': f"Estudiantes  de ingenieria desarrollan biodigestor", 'link': f'https://www.culiacan.tecnm.mx/estudiantes-de-ingenieria-mecanica-desarrollan-biodigestor-para-generar-gas-metano-como-combustible/'}, room=user_id)  
-
-    elif label.startswith("Convocatoria1"):
-        emit('show_image_link', {
-            'label': 'Convocatoria abierta de plazas docentes febrero 2025',
-            'image': f'/static/img/conv1.png',
-            'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-de-plazas-docentes-febrero-2025/'
-        }, room=user_id)
-    elif label.startswith("Convocatoria2"):
-        emit('show_image_link', {
-            'label': 'Convocatoria abierta no docente',
-            'image': f'/static/img/conv2.png',
-            'link': f'https://www.culiacan.tecnm.mx/participa-en-la-convocatoria-abierta-no-docente/'
-        }, room=user_id)        
-    elif label.startswith("Convocatoria3"):
-        emit('show_image_link', {
-            'label': 'Convocatorias cerradas plazas administrativas 2025',
-            'image': f'/static/img/conv3.png',
-            'link': f'https://www.culiacan.tecnm.mx/convocatorias-cerradas-plazas-administrativas-febrero-2025/'
-        }, room=user_id)
 
 def enviar_audio(user_id, archivo):
     audio_msg = {
