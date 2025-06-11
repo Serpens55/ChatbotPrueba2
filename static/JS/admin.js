@@ -14,6 +14,11 @@ messageInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") sendMessage();
 });
 
+function getCurrentTimestamp() {
+    return new Date().toLocaleString(); // Fecha y hora local del navegador
+}
+
+
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "" && selectedChat) {

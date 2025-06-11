@@ -59,14 +59,14 @@ def handle_register_name(data):
     # Mensaje de bienvenida de Cientibot
     bienvenida = {
         'text': f'Hola {name}, yo soy Cientibot. Para empezar, escriba "Menu" para abrir el menú interactivo 🚀',
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': 'Cientibot'
     }
 
     # Mensaje de audio de bienvenida (usa tu archivo de audio aquí)
     audio_bienvenida = {
         'audio_url': '/static/audio/bienvenida.mp3',  # Asegúrate de tener este archivo
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': 'Cientibot'
     }
 
@@ -94,7 +94,7 @@ def handle_message(data):
 
     msg = {
         'text': data['text'],
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': name
     }
     chats.setdefault(user_id, []).append(msg)
@@ -106,7 +106,7 @@ def handle_message(data):
         enviar_audio(user_id, 'hola.mp3')
         bienvenida = {
             'text': "Un saludo amigo, yo soy Cientibot, tu asistente virtual. ¿En qué puedo ayudarte?",
-            'timestamp': time.strftime('%H:%M:%S'),
+            'timestamp': data.get("timestamp"),
             'sender': 'Asistente'
         }
         chats[user_id].append(bienvenida)
@@ -117,7 +117,7 @@ def handle_message(data):
         enviar_audio(user_id, 'contactoadmin.mp3')
         bienvenida = {
             'text': "Espera un momento, seras contactado con un administrador en unos segundos para que pueda atenderte",
-            'timestamp': time.strftime('%H:%M:%S'),
+            'timestamp': data.get("timestamp"),
             'sender': 'Asistente'
         }
         chats[user_id].append(bienvenida)
@@ -128,7 +128,7 @@ def handle_message(data):
         enviar_audio(user_id, 'agradecimiento.mp3')
         bienvenida = {
             'text': "Ha sido un placer ser de ayuda, espero estes satisfecho.",
-            'timestamp': time.strftime('%H:%M:%S'),
+            'timestamp': data.get("timestamp"),
             'sender': 'Asistente'
         }
         chats[user_id].append(bienvenida)
@@ -150,7 +150,7 @@ def handle_register_name(data):
         # Enviar mensaje de bienvenida al cliente
     bienvenida = {
         'text': f'Hola {name}, yo soy Cientibot. Para empezar, escriba "Menu" para abrir el menú interactivo 🚀',
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': 'Cientibot'
     }
     
@@ -162,7 +162,7 @@ def handle_register_name(data):
 def enviar_audio(user_id, archivo):
     audio_msg = {
         'audio_url': f'/static/audio/{archivo}',
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': 'Asistente'
     }
     chats[user_id].append(audio_msg)
@@ -180,7 +180,7 @@ def handle_admin_message(data):
     user_id = data['user_id']
     msg = {
         'text': data['text'],
-        'timestamp': time.strftime('%H:%M:%S'),
+        'timestamp': data.get("timestamp"),
         'sender': 'Admin'
     }
     chats.setdefault(user_id, []).append(msg)

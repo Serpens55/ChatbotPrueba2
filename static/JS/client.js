@@ -15,6 +15,11 @@ socket.on("connected", function (data) {
     socket.emit("join");
 });
 
+function getCurrentTimestamp() {
+    return new Date().toLocaleString(); // Fecha y hora local del navegador
+}
+
+
 const chatBox = document.getElementById("chat-box");
 const messageInput = document.getElementById("message");
 const sendButton = document.getElementById("send");
@@ -27,8 +32,11 @@ messageInput.addEventListener("keypress", function (event) {
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "") {
-        socket.emit("message", { text: message });
+        socket.emit("message", { text: message,
+        timestamp: getCurrentTimestamp()
+         });
         messageInput.value = "";
+        
     }
 }
 

@@ -25,11 +25,18 @@ messageInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") sendMessage();
 });
 
+function getCurrentTimestamp() {
+    return new Date().toLocaleString(); // Fecha y hora local del navegador
+}
+
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "") {
-        socket.emit("message", { text: message });
+        socket.emit("message", { text: message,
+        timestamp: getCurrentTimestamp()   
+         });
         messageInput.value = "";
+  
     }
 }
 
