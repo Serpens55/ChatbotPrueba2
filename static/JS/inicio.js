@@ -71,72 +71,65 @@ socket.on("show_menu", () => {
 
     const message = document.createElement("div");
     message.classList.add("menu-message");
-    message.textContent = "Bienvenido al menú principal. ¿Qué es lo que te gustaría conocer?";
+    message.innerHTML = "<strong>Menu Principal</strong><br>Selecciona una opción";
     menuContainer.appendChild(message);
 
-    const options = [
-        { id: 1, label: "Ámbar" },
-        { id: 2, label: "Novedades" },
-        { id: 3, label: "Convocatorias" },
-        { id: 4, label: "Mapa" }
+    const menuOptions = [
+        {
+            label: "Ámbar",
+            submenu: ["Ámbar Alumnos", "Ámbar Inglés"]
+        },
+        {
+            label: "Novedades",
+            submenu: ["Novedad 1", "Novedad 2", "Novedad 3"]
+        },
+        {
+            label: "Convocatorias",
+            submenu: ["Convocatoria 1", "Convocatoria 2", "Convocatoria 3"]
+        },
+        {
+            label: "Mapa",
+            submenu: null // Este muestra una imagen
+        }
     ];
 
-    options.forEach(opt => {
+    menuOptions.forEach(opt => {
         const btn = document.createElement("button");
         btn.textContent = opt.label;
         btn.classList.add("menu-button");
+
         btn.onclick = () => {
-            menuFlow.push(opt.label);
-            updateFlowDisplay(); // muestra el flujo
-            socket.emit("menu_option_selected", { option: String(opt.id) });
+            if (opt.submenu) {
+                const existing = document.getElementById(`submenu-${opt.label}`);
+                if (existing) {
+                    existing.remove(); // Cierra si ya estaba abierto
+                    return;
+                }
+
+                const submenuDiv = document.createElement("div");
+                submenuDiv.id = `submenu-${opt.label}`;
+                submenuDiv.classList.add("submenu-container");
+
+                opt.submenu.forEach(sub => {
+                    const subBtn = document.createElement("button");
+                    subBtn.textContent = sub;
+                    subBtn.classList.add("submenu-button");
+                    subBtn.onclick = () => {
+                        socket.emit("submenu_option_selected", { label: sub });
+                    };
+                    submenuDiv.appendChild(subBtn);
+                });
+
+                btn.insertAdjacentElement("afterend", submenuDiv);
+            } else if (opt.label === "Mapa") {
+                socket.emit("menu_option_selected", { option: "4" });
+            }
         };
+
         menuContainer.appendChild(btn);
     });
 
     chatBox.appendChild(menuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-
-socket.on("show_submenu", (data) => {
-    const submenuContainer = document.createElement("div");
-    submenuContainer.classList.add("other-message", "submenu-container");
-
-    data.submenu.forEach((label) => {
-        const btn = document.createElement("button");
-        btn.textContent = label;
-        btn.classList.add("submenu-button");
-        btn.onclick = () => {
-            menuFlow.push(label);
-            updateFlowDisplay(); // actualiza flujo
-            socket.emit("submenu_option_selected", { label });
-        };
-        submenuContainer.appendChild(btn);
-    });
-
-    chatBox.appendChild(submenuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-
-socket.on("show_link", (data) => {
-    const container = document.createElement("div");
-    container.classList.add("other-message");
-
-    const label = document.createElement("div");
-    label.textContent = data.label;
-    label.style.fontWeight = "bold";
-    label.style.marginBottom = "5px";
-
-    const link = document.createElement("a");
-    link.href = data.link;
-    link.target = "_blank";
-    link.textContent = "Abrir";
-    link.classList.add("submenu-button");
-
-    container.appendChild(label);
-    container.appendChild(link);
-    chatBox.appendChild(container);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
