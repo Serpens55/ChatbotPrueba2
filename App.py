@@ -162,7 +162,6 @@ def handle_register_name(data):
 def enviar_audio(user_id, archivo):
     audio_msg = {
         'audio_url': f'/static/audio/{archivo}',
-        'timestamp': data.get("timestamp"),
         'sender': 'Asistente'
     }
     chats[user_id].append(audio_msg)
