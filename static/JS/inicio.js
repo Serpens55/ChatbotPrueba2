@@ -1,0 +1,181 @@
+const socket = io();
+let userId = null;
+let userName = null;
+let menuFlow = [];
+
+window.addEventListener("DOMContentLoaded", () => {
+    userName = prompt("Ingresa tu nombre:");
+    if (!userName) userName = "Invitado";
+
+    document.getElementById("user-name").textContent = userName;
+    socket.emit("register_name", { name: userName });
+});
+
+socket.on("connected", (data) => {
+    userId = data.user_id;
+    socket.emit("join");
+});
+
+const chatBox = document.getElementById("chat-box");
+const messageInput = document.getElementById("message");
+const sendButton = document.getElementById("send");
+
+sendButton.addEventListener("click", sendMessage);
+messageInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") sendMessage();
+});
+
+function sendMessage() {
+    const message = messageInput.value.trim();
+    if (message !== "") {
+        socket.emit("message", { text: message });
+        messageInput.value = "";
+    }
+}
+
+socket.on("message", (data) => {
+    const messageElement = document.createElement("div");
+
+    if (data.audio_url) {
+        const button = document.createElement("button");
+        button.textContent = data.text || "Reproducir ▶";
+        button.classList.add("menu-button");
+        button.addEventListener("click", () => {
+            const audio = new Audio(data.audio_url);
+            audio.play();
+        });
+        messageElement.appendChild(button);
+    } else {
+        messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
+    }
+
+    messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+function updateFlowDisplay() {
+    const flowContainer = document.getElementById("navigation-flow");
+    flowContainer.innerHTML = "";
+    menuFlow.forEach(item => {
+        const el = document.createElement("div");
+        el.textContent = item;
+        el.classList.add("flow-item");
+        flowContainer.appendChild(el);
+    });
+}
+
+socket.on("show_menu", () => {
+    const menuContainer = document.createElement("div");
+    menuContainer.classList.add("other-message", "menu-container");
+
+    const message = document.createElement("div");
+    message.classList.add("menu-message");
+    message.textContent = "Bienvenido al menú principal. ¿Qué es lo que te gustaría conocer?";
+    menuContainer.appendChild(message);
+
+    const options = [
+        { id: 1, label: "Ámbar" },
+        { id: 2, label: "Novedades" },
+        { id: 3, label: "Convocatorias" },
+        { id: 4, label: "Mapa" }
+    ];
+
+    options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt.label;
+        btn.classList.add("menu-button");
+        btn.onclick = () => {
+            menuFlow.push(opt.label);
+            updateFlowDisplay();
+            socket.emit("menu_option_selected", { option: String(opt.id) });
+        };
+        menuContainer.appendChild(btn);
+    });
+
+    chatBox.appendChild(menuContainer);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_submenu", (data) => {
+    const submenuContainer = document.createElement("div");
+    submenuContainer.classList.add("other-message", "submenu-container");
+
+    data.submenu.forEach((label) => {
+        const btn = document.createElement("button");
+        btn.textContent = label;
+        btn.classList.add("submenu-button");
+        btn.onclick = () => {
+            menuFlow.push(label);
+            updateFlowDisplay();
+            socket.emit("submenu_option_selected", { label });
+        };
+        submenuContainer.appendChild(btn);
+    });
+
+    chatBox.appendChild(submenuContainer);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_link", (data) => {
+    const container = document.createElement("div");
+    container.classList.add("other-message");
+
+    const label = document.createElement("div");
+    label.textContent = data.label;
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "5px";
+
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.target = "_blank";
+    link.textContent = "Abrir";
+    link.classList.add("submenu-button");
+
+    container.appendChild(label);
+    container.appendChild(link);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_image_link", (data) => {
+    const container = document.createElement("div");
+    container.classList.add("other-message");
+
+    const label = document.createElement("div");
+    label.textContent = data.label;
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "5px";
+
+    const img = document.createElement("img");
+    img.src = data.image;
+    img.alt = data.label;
+    img.style.maxWidth = "100%";
+    img.style.marginBottom = "5px";
+
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.target = "_blank";
+    link.textContent = "Ver más";
+    link.classList.add("submenu-button");
+
+    container.appendChild(label);
+    container.appendChild(img);
+    container.appendChild(link);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_map", (data) => {
+    const container = document.createElement("div");
+    container.classList.add("other-message");
+
+    const img = document.createElement("img");
+    img.src = data.image;
+    img.alt = "Mapa de instalaciones";
+    img.style.maxWidth = "100%";
+
+    container.appendChild(img);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
