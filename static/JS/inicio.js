@@ -87,7 +87,7 @@ socket.on("show_menu", () => {
         btn.classList.add("menu-button");
         btn.onclick = () => {
             menuFlow.push(opt.label);
-            updateFlowDisplay();
+            updateFlowDisplay(); // muestra el flujo
             socket.emit("menu_option_selected", { option: String(opt.id) });
         };
         menuContainer.appendChild(btn);
@@ -96,6 +96,7 @@ socket.on("show_menu", () => {
     chatBox.appendChild(menuContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
 
 socket.on("show_submenu", (data) => {
     const submenuContainer = document.createElement("div");
@@ -107,7 +108,7 @@ socket.on("show_submenu", (data) => {
         btn.classList.add("submenu-button");
         btn.onclick = () => {
             menuFlow.push(label);
-            updateFlowDisplay();
+            updateFlowDisplay(); // actualiza flujo
             socket.emit("submenu_option_selected", { label });
         };
         submenuContainer.appendChild(btn);
@@ -116,6 +117,7 @@ socket.on("show_submenu", (data) => {
     chatBox.appendChild(submenuContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
 
 socket.on("show_link", (data) => {
     const container = document.createElement("div");

@@ -268,3 +268,18 @@ img {
     height: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+.navigation-flow {
+    font-size: 0.9em;
+    color: #555;
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.flow-item {
+    background-color: #eef;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
