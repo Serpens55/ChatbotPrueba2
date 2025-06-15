@@ -195,7 +195,21 @@ body {
 /* BOTONES DE MENÚ Y SUBMENÚ */
 /* ---------------------- */
 
-.menu-button,
+.menu-button{
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .submenu-button {
     display: block;
     width: 100%;
@@ -223,8 +237,6 @@ body {
     flex-direction: column;
     align-items: flex-start;
     margin: 10px 0;
-    transition: all 0.3s ease;
-    margin-top: 5px;
 }
 
 /* Mensaje encima del menú */
