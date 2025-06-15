@@ -86,4 +86,24 @@ socket.on("show_menu", () => {
 });
 
 
- 
+ socket.on("show_submenu", (data) => {
+    // ❌ Eliminar todos los submenús anteriores
+    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
+
+    // ✅ Crear nuevo submenú
+    const submenuContainer = document.createElement("div");
+    submenuContainer.classList.add("other-message", "submenu-container");
+
+    data.submenu.forEach((label) => {
+        const btn = document.createElement("button");
+        btn.textContent = label;
+        btn.classList.add("submenu-button");
+        btn.onclick = () => {
+            socket.emit("submenu_option_selected", { label });
+        };
+        submenuContainer.appendChild(btn);
+    });
+
+    chatBox.appendChild(submenuContainer);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
