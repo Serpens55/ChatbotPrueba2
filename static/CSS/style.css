@@ -201,7 +201,7 @@ body {
     width: 100%;
     padding: 12px;
     margin: 5px 0;
-    background-color: #007bff;
+    background-color: #003366;
     color: white;
     border: none;
     border-radius: 6px;
@@ -213,7 +213,7 @@ body {
 
 .menu-button:hover,
 .submenu-button:hover {
-    background-color: #0056b3;
+    background-color: #002244;
 }
 
 /* Contenedor de menú y submenús */
@@ -223,6 +223,8 @@ body {
     flex-direction: column;
     align-items: flex-start;
     margin: 10px 0;
+    transition: all 0.3s ease;
+    margin-top: 5px;
 }
 
 /* Mensaje encima del menú */
