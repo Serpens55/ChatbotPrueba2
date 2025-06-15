@@ -225,9 +225,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.menu-button:hover,
+.menu-button:hover {
+    background-color: #0659ac;
+}
+
 .submenu-button:hover {
-    background-color: #002244;
+    background-color: #002e5c;
 }
 
 /* Contenedor de menú y submenús */
