@@ -105,33 +105,32 @@ socket.on("show_menu", () => {
         btn.textContent = opt.label;
         btn.classList.add("menu-button");
 
-        btn.onclick = () => {
-            if (opt.submenu) {
-                const existing = document.getElementById(`submenu-${opt.label}`);
-                if (existing) {
-                    existing.remove(); // Cierra si ya estaba abierto
-                    return;
-                }
+                btn.onclick = () => {
+                    // 🔥 Eliminar TODOS los submenús antes de abrir otro
+                    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
 
-                const submenuDiv = document.createElement("div");
-                submenuDiv.id = `submenu-${opt.label}`;
-                submenuDiv.classList.add("submenu-container");
+                    const existing = document.getElementById(`submenu-${opt.label}`);
+                    if (existing) {
+                        existing.remove(); // Si ya estaba abierto, lo cierra (toggle)
+                        return;
+                    }
 
-                opt.submenu.forEach(sub => {
-                    const subBtn = document.createElement("button");
-                    subBtn.textContent = sub;
-                    subBtn.classList.add("submenu-button");
-                    subBtn.onclick = () => {
-                        socket.emit("submenu_option_selected", { label: sub });
-                    };
-                    submenuDiv.appendChild(subBtn);
-                });
+                    const submenuDiv = document.createElement("div");
+                    submenuDiv.id = `submenu-${opt.label}`;
+                    submenuDiv.classList.add("submenu-container");
 
-                btn.insertAdjacentElement("afterend", submenuDiv);
-            } else if (opt.label === "Mapa") {
-                socket.emit("menu_option_selected", { option: "4" });
-            }
-        };
+                    opt.submenu.forEach(sub => {
+                        const subBtn = document.createElement("button");
+                        subBtn.textContent = sub;
+                        subBtn.classList.add("submenu-button");
+                        subBtn.onclick = () => {
+                            socket.emit("submenu_option_selected", { label: sub });
+                        };
+                        submenuDiv.appendChild(subBtn);
+                    });
+
+                    btn.insertAdjacentElement("afterend", submenuDiv);
+                };
 
         menuContainer.appendChild(btn);
     });
