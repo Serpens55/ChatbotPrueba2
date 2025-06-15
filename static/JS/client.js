@@ -85,23 +85,5 @@ socket.on("show_menu", () => {
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-socket.on("show_submenu", (data) => {
-    const submenuContainer = document.createElement("div");
-    submenuContainer.classList.add("other-message", "submenu-container");
 
-    const message = document.createElement("div");
-    message.classList.add("menu-message");
-    message.textContent = `Opciones disponibles para ${data.option}:`;
-    submenuContainer.appendChild(message);
-
-    data.submenu.forEach((label) => {
-        const btn = document.createElement("button");
-        btn.textContent = label;
-        btn.classList.add("submenu-button");
-        submenuContainer.appendChild(btn);
-    });
-
-    chatBox.appendChild(submenuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
  

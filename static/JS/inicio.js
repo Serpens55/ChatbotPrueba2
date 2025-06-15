@@ -83,16 +83,16 @@ socket.on("show_menu", () => {
 
     const menuOptions = [
         {
-            label: "Ámbar",
-            submenu: ["Ámbar Alumnos", "Ámbar Inglés"]
+            label: "Aspirantes",
+            submenu: ["Proceso de Reinscripcion"]
         },
         {
-            label: "Novedades",
-            submenu: ["Novedad 1", "Novedad 2", "Novedad 3"]
+            label: "Oferta Educativa",
+            submenu: ["Licenciaturas", "Posgrados", "Coordinacion de LE"]
         },
         {
-            label: "Convocatorias",
-            submenu: ["Convocatoria 1", "Convocatoria 2", "Convocatoria 3"]
+            label: "Estudiantes",
+            submenu: ["Centro de Informacion", "Division de Estudios Profesionales", "Desarrollo Academico", "Servicios Escolares"]
         },
         {
             label: "Mapa",
@@ -179,5 +179,27 @@ socket.on("show_map", (data) => {
 
     container.appendChild(img);
     chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_submenu", (data) => {
+    // ❌ Eliminar todos los submenús anteriores
+    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
+
+    // ✅ Crear nuevo submenú
+    const submenuContainer = document.createElement("div");
+    submenuContainer.classList.add("other-message", "submenu-container");
+
+    data.submenu.forEach((label) => {
+        const btn = document.createElement("button");
+        btn.textContent = label;
+        btn.classList.add("submenu-button");
+        btn.onclick = () => {
+            socket.emit("submenu_option_selected", { label });
+        };
+        submenuContainer.appendChild(btn);
+    });
+
+    chatBox.appendChild(submenuContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
