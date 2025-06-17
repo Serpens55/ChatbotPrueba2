@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room
 from menu_config import menu_config
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode='gevent', manage_session=False)
