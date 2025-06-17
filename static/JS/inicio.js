@@ -1,7 +1,6 @@
 const socket = io();
 let userId = null;
 let userName = null;
-let menuFlow = [];
 
 window.addEventListener("DOMContentLoaded", () => {
     userName = prompt("Ingresa tu nombre:");
@@ -26,19 +25,140 @@ messageInput.addEventListener("keypress", (event) => {
 });
 
 function getCurrentTimestamp() {
-    return new Date().toLocaleString(); // Fecha y hora local del navegador
+    return new Date().toLocaleString();
 }
 
 function sendMessage() {
     const message = messageInput.value.trim();
     if (message !== "") {
-        socket.emit("message", { text: message,
-        timestamp: getCurrentTimestamp()   
-         });
+        socket.emit("message", {
+            text: message,
+            timestamp: getCurrentTimestamp()
+        });
         messageInput.value = "";
-  
     }
 }
+
+function clearMenus() {
+    document.querySelectorAll(".menu-container, .submenu-container, .info-container, .image-container").forEach(el => el.remove());
+}
+
+function createButton(label, id, className, emitEvent) {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    btn.classList.add(className);
+    btn.onclick = () => {
+        clearMenus();
+        socket.emit(emitEvent, { id });
+    };
+    return btn;
+}
+
+function addReturnButton() {
+    const returnBtn = createButton("🔙 Regresar al menú principal", "menu", "menu-button", "message");
+    const container = document.createElement("div");
+    container.classList.add("menu-container");
+    container.appendChild(returnBtn);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+socket.on("show_menu", () => {
+    clearMenus();
+
+    const menuOptions = [
+        { id: "menu_ambar", label: "Ambar" },
+        { id: "menu_asp", label: "Aspirantes" },
+        { id: "menu_ofe", label: "Oferta Educativa" },
+        { id: "menu_est", label: "Estudiantes" },
+        { id: "menu_map", label: "Mapa" }
+    ];
+
+    const container = document.createElement("div");
+    container.classList.add("menu-container");
+
+    const title = document.createElement("div");
+    title.classList.add("menu-message");
+    title.textContent = "Menú Principal";
+    container.appendChild(title);
+
+    menuOptions.forEach(opt => {
+        const btn = createButton(opt.label, opt.id, "menu-button", "menu_option_selected");
+        container.appendChild(btn);
+    });
+
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_submenu", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("submenu-container");
+
+    data.submenu.forEach(item => {
+        const btn = createButton(item.label, item.id, "submenu-button", "submenu_option_selected");
+        container.appendChild(btn);
+    });
+
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_link", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("submenu-container");
+
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.target = "_blank";
+    link.textContent = data.label;
+    link.classList.add("submenu-button");
+
+    container.appendChild(link);
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_info", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("info-container", "other-message");
+
+    const title = document.createElement("strong");
+    title.textContent = data.label;
+    container.appendChild(title);
+
+    const text = document.createElement("p");
+    text.textContent = data.text;
+    container.appendChild(text);
+
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_map", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("image-container", "other-message");
+
+    const img = document.createElement("img");
+    img.src = data.image;
+    img.alt = "Mapa de instalaciones";
+    container.appendChild(img);
+
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
 
 socket.on("message", (data) => {
     const messageElement = document.createElement("div");
@@ -58,147 +178,5 @@ socket.on("message", (data) => {
 
     messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
     chatBox.appendChild(messageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-function updateFlowDisplay() {
-    const flowContainer = document.getElementById("navigation-flow");
-    flowContainer.innerHTML = "";
-    menuFlow.forEach(item => {
-        const el = document.createElement("div");
-        el.textContent = item;
-        el.classList.add("flow-item");
-        flowContainer.appendChild(el);
-    });
-}
-
-socket.on("show_menu", () => {
-    const menuContainer = document.createElement("div");
-    menuContainer.classList.add("other-message", "menu-container");
-
-    const message = document.createElement("div");
-    message.classList.add("menu-message");
-    message.innerHTML = "<strong>Menu Principal</strong><br>Selecciona una opción";
-    menuContainer.appendChild(message);
-
-    const menuOptions = [
-        {
-            label: "Aspirantes",
-            submenu: ["Proceso de Reinscripcion"]
-        },
-        {
-            label: "Oferta Educativa",
-            submenu: ["Licenciaturas", "Posgrados", "Coordinacion de LE"]
-        },
-        {
-            label: "Estudiantes",
-            submenu: ["Centro de Informacion", "Division de Estudios Profesionales", "Desarrollo Academico", "Servicios Escolares"]
-        },
-        {
-            label: "Mapa",
-            submenu: null // Este muestra una imagen
-        }
-    ];
-
-    menuOptions.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt.label;
-        btn.classList.add("menu-button");
-
-                btn.onclick = () => {
-                    // 🔥 Eliminar TODOS los submenús antes de abrir otro
-                    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
-
-                    const existing = document.getElementById(`submenu-${opt.label}`);
-                    if (existing) {
-                        existing.remove(); // Si ya estaba abierto, lo cierra (toggle)
-                        return;
-                    }
-
-                    const submenuDiv = document.createElement("div");
-                    submenuDiv.id = `submenu-${opt.label}`;
-                    submenuDiv.classList.add("submenu-container");
-
-                    opt.submenu.forEach(sub => {
-                        const subBtn = document.createElement("button");
-                        subBtn.textContent = sub;
-                        subBtn.classList.add("submenu-button");
-                        subBtn.onclick = () => {
-                            socket.emit("submenu_option_selected", { label: sub });
-                        };
-                        submenuDiv.appendChild(subBtn);
-                    });
-
-                    btn.insertAdjacentElement("afterend", submenuDiv);
-                };
-
-        menuContainer.appendChild(btn);
-    });
-
-    chatBox.appendChild(menuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-socket.on("show_image_link", (data) => {
-    const container = document.createElement("div");
-    container.classList.add("other-message");
-
-    const label = document.createElement("div");
-    label.textContent = data.label;
-    label.style.fontWeight = "bold";
-    label.style.marginBottom = "5px";
-
-    const img = document.createElement("img");
-    img.src = data.image;
-    img.alt = data.label;
-    img.style.maxWidth = "100%";
-    img.style.marginBottom = "5px";
-
-    const link = document.createElement("a");
-    link.href = data.link;
-    link.target = "_blank";
-    link.textContent = "Ver más";
-    link.classList.add("submenu-button");
-
-    container.appendChild(label);
-    container.appendChild(img);
-    container.appendChild(link);
-    chatBox.appendChild(container);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-socket.on("show_map", (data) => {
-    const container = document.createElement("div");
-    container.classList.add("other-message");
-
-    const img = document.createElement("img");
-    img.src = data.image;
-    img.alt = "Mapa de instalaciones";
-    img.style.maxWidth = "100%";
-
-    container.appendChild(img);
-    chatBox.appendChild(container);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-socket.on("show_submenu", (data) => {
-    // ❌ Eliminar todos los submenús anteriores
-    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
-
-    // ✅ Crear nuevo submenú
-    const submenuContainer = document.createElement("div");
-    submenuContainer.classList.add("other-message", "submenu-container");
-
-    data.submenu.forEach((label) => {
-        const btn = document.createElement("button");
-        btn.textContent = label;
-        btn.classList.add("submenu-button");
-        btn.onclick = () => {
-            socket.emit("submenu_option_selected", { label });
-        };
-        submenuContainer.appendChild(btn);
-    });
-
-    chatBox.appendChild(submenuContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
