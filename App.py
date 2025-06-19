@@ -133,13 +133,22 @@ def handle_submenu_option(data):
 
     def find_option_by_id(menu, target_id):
         if isinstance(menu, dict):
-            if menu.get("id") == target_id:
-                return menu
-            if menu.get("type") == "submenu":
-                for item in menu.get("submenu", []):
-                    result = find_option_by_id(item, target_id)
-                    if result:
-                        return result
+                for key, item in menu.items():
+                    # Caso 1: el ID es la clave del menú
+                    if key == target_id:
+                        return item
+
+                    # Caso 2: el objeto tiene un ID explícito
+                    if isinstance(item, dict):
+                        if item.get("id") == target_id:
+                            return item
+
+                        # Buscar recursivamente en submenús
+                        if item.get("type") == "submenu":
+                            for subitem in item.get("submenu", []):
+                                result = find_option_by_id(subitem, target_id)
+                                if result:
+                                    return result
         return None
 
     option = find_option_by_id(menu_config, option_id)
