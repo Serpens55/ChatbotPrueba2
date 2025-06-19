@@ -56,19 +56,45 @@ menu_config = {
                                 "id": "ambiental_reticula",
                                 "label": "Retícula",
                                 "type": "link",
-                                "link": "https://..."
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula-Ingenieria-Ambiental.pdf"
                             },
                             {
                                 "id": "ambiental_plan",
                                 "label": "Plan de estudios",
                                 "type": "link",
-                                "link": "https://..."
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-AMBIENTAL.pdf"
                             },
                             {
                                 "id": "ambiental_programas",
                                 "label": "Programas de estudios por materia",
                                 "type": "link",
-                                "link": "https://..."
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/AMBIENTAL.zip"
+                            }
+                        ]
+                    },
+
+                     {
+                        "id": "lic_ambiental",
+                        "label": "Ingeniería Bioquimica",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "ambiental_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "ambiental_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "ambiental_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
                             }
                         ]
                     }
