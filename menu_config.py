@@ -74,33 +74,286 @@ menu_config = {
                     },
 
                      {
-                        "id": "lic_ambiental",
+                        "id": "lic_bioquimica",
                         "label": "Ingeniería Bioquimica",
                         "type": "submenu",
                         "submenu": [
                             {
-                                "id": "ambiental_reticula",
+                                "id": "bioquimica_reticula",
                                 "label": "Retícula",
                                 "type": "link",
                                 "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
                             },
                             {
-                                "id": "ambiental_plan",
+                                "id": "bioquimica_plan",
                                 "label": "Plan de estudios",
                                 "type": "link",
                                 "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
                             },
                             {
-                                "id": "ambiental_programas",
+                                "id": "bioquimica_programas",
                                 "label": "Programas de estudios por materia",
                                 "type": "link",
                                 "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
                             }
                         ]
-                    }
+                    },
+                    {
+                        "id": "lic_electrica",
+                        "label": "Ingeniería Electrica",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "electrica_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "electrica_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "electrica_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_electronica",
+                        "label": "Ingeniería Electronica",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "electronica_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "electronica_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "electronica_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_energias",
+                        "label": "Ingeniería en Energias Renovables",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "energias_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "energias_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "energias_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_gestion",
+                        "label": "Ingeniería en Gestion Empresarial",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "gestion_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "gestion_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "gestion_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_industrial",
+                        "label": "Ingeniería Industrial",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "industrial_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "industrial_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "industrial_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_agricola",
+                        "label": "Ingeniería Innovacion Agricola Sustentable",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "agricola_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "agricola_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "agricola_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_mecanica",
+                        "label": "Ingeniería Mecanica",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "mecanica_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "mecanica_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "mecanica_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+
+                    {
+                        "id": "lic_mecatronica",
+                        "label": "Ingeniería Mecatronica",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "mecatronica_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "mecatronica_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "mecatronica_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                 
+                    {
+                        "id": "lic_sistemas",
+                        "label": "Ingeniería en Sistemas Computacionales",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "sistemas_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "sistemas_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "sistemas_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "lic_tic",
+                        "label": "Ingeniería en Tecnologias de la Informacion y Comunicaciones",
+                        "type": "submenu",
+                        "submenu": [
+                            {
+                                "id": "tic_reticula",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "https://docs.google.com/viewerng/viewer?url=https://www.culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula+Ingenieria+Bioquimica.pdf"
+                            },
+                            {
+                                "id": "tic_plan",
+                                "label": "Plan de estudios",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/02/FOLLETO-BIOQUIMICA.pdf"
+                            },
+                            {
+                                "id": "tic_programas",
+                                "label": "Programas de estudios por materia",
+                                "type": "link",
+                                "link": "https://www.culiacan.tecnm.mx/wp-content/uploads/2024/01/BIOQUIMICA.zip"
+                            }
+                        ]
+                    }           
                     # Puedes repetir esta estructura para otras carreras
                 ]
             },
+            
             {
                 "id": "ofe_pos",
                 "label": "Posgrados",
