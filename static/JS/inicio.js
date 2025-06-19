@@ -138,21 +138,20 @@ socket.on("show_link", (data) => {
     clearMenus();
 
     const container = document.createElement("div");
-    container.classList.add("info-container");
+    container.classList.add("info-container", "other-message");
 
     const label = document.createElement("div");
-    label.classList.add("info-title");
+    label.classList.add(".submenu-button");
     label.textContent = data.label;
-    container.appendChild(label);
 
-    // Botón que abre el link
-    const linkBtn = document.createElement("button");
-    linkBtn.textContent = "Abrir enlace";
-    linkBtn.classList.add("submenu-button");
-    linkBtn.onclick = () => {
-        window.open(data.link, "_blank");
-    };
-    container.appendChild(linkBtn);
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.textContent = "Abrir enlace";
+    link.target = "_blank";
+    link.classList.add("menu-message");
+
+    container.appendChild(label);
+    container.appendChild(link);
 
     // Botón para regresar al submenú anterior
     if (menuHistory.length > 0) {
