@@ -2,7 +2,7 @@ menu_config = {
     "menu_ambar": {
         "type": "link",
         "label": "Ambar",
-        "link": "culiacan.ambar.tecnm.mx/estudiantes/"
+        "link": "https://www.culiacan.ambar.tecnm.mx/estudiantes/"
     },
     "menu_asp": {
         "type": "submenu",
