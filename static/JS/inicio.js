@@ -64,6 +64,24 @@ function addReturnButton() {
 }
 
 
+socket.on("show_link", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("submenu-container");
+
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.target = "_blank";
+    link.textContent = data.label;
+    link.classList.add("submenu-button");
+
+    container.appendChild(link);
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
 socket.on("show_info", (data) => {
     clearMenus();
 
