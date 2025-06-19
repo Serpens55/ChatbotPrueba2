@@ -57,7 +57,7 @@ function createButton(label, id, className, emitEvent) {
 function addReturnButton() {
     const returnBtn = document.createElement("button");
     returnBtn.textContent = "Regresar al menú principal";
-    returnBtn.classList.add("return-button");
+    returnBtn.classList.add("submenu-button");
     returnBtn.onclick = () => {
         socket.emit("return_to_main_menu");
     };
