@@ -63,6 +63,49 @@ function addReturnButton() {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+socket.on("show_menu", () => {
+    clearMenus();
+
+    const menuOptions = [
+        { id: "menu_ambar", label: "Ambar" },
+        { id: "menu_asp", label: "Aspirantes" },
+        { id: "menu_ofe", label: "Oferta Educativa" },
+        { id: "menu_est", label: "Estudiantes" },
+        { id: "menu_map", label: "Mapa" }
+    ];
+
+    const container = document.createElement("div");
+    container.classList.add("menu-container");
+
+    const title = document.createElement("div");
+    title.classList.add("menu-message");
+    title.textContent = "Menú Principal";
+    container.appendChild(title);
+
+    menuOptions.forEach(opt => {
+        const btn = createButton(opt.label, opt.id, "menu-button", "menu_option_selected");
+        container.appendChild(btn);
+    });
+
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_submenu", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("submenu-container");
+
+    data.submenu.forEach(item => {
+        const btn = createButton(item.label, item.id, "submenu-button", "submenu_option_selected");
+        container.appendChild(btn);
+    });
+
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
 
 socket.on("show_link", (data) => {
     clearMenus();

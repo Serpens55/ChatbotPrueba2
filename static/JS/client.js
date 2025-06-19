@@ -76,7 +76,7 @@ socket.on("show_menu", () => {
         btn.textContent = `Opción ${i}`;
         btn.classList.add("menu-button");
         btn.onclick = () => {
-            socket.emit("menu_option_selected", { id: item.id }); // ✅ ENVÍA id correcto
+            socket.emit("menu_option_selected", { option: String(i) });
         };
         menuContainer.appendChild(btn);
     }
@@ -86,7 +86,7 @@ socket.on("show_menu", () => {
 });
 
 
-socket.on("show_submenu", (data) => {
+ socket.on("show_submenu", (data) => {
     document.querySelectorAll(".submenu-container").forEach(el => el.remove());
 
     const submenuContainer = document.createElement("div");
@@ -98,7 +98,14 @@ socket.on("show_submenu", (data) => {
         btn.classList.add("submenu-button");
 
         btn.onclick = () => {
-            socket.emit("submenu_option_selected", { id: item.id }); // ✅ ENVÍA id
+            if (item.type === "link") {
+                window.open(item.link, "_blank");
+            } else if (item.type === "info") {
+                alert(item.text);
+            } else if (item.type === "submenu") {
+                // Vuelve a emitir al servidor para renderizar el submenú hijo
+                socket.emit("submenu_option_selected", { submenu: item.submenu });
+            }
         };
 
         submenuContainer.appendChild(btn);
