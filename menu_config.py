@@ -7,12 +7,10 @@ menu_config = {
     "menu_asp": {
         "type": "submenu",
         "submenu": [
-            {"id": "asp_preinsc", "label": "Sistema de Pre-Inscripciones", "type": "link", "link": "https://link-preinscripciones.com"},
-            {"id": "asp_recibos", "label": "Recibos", "type": "link", "link": "https://link-recibos.com"},
+            {"id": "asp_preinsc", "label": "Sistema de Pre-Inscripciones", "type": "link", "link": "https://www.culiacan.tecnm.mx/preinscripciones-agosto-diciembre-2025/"},
+            {"id": "asp_recibos", "label": "Recibos", "type": "link", "link": "https://culiacan.ambar.tecnm.mx/recibos/"},
             {"id": "asp_evaluatec", "label": "EVALUATEC", "type": "submenu", "submenu": [
-                {"id": "eval_link1", "label": "Link 1", "type": "link", "link": "https://link-evaluatec1.com"},
-                {"id": "eval_link2", "label": "Link 2", "type": "link", "link": "https://link-evaluatec2.com"},
-                {"id": "eval_link3", "label": "Link 3", "type": "link", "link": "https://link-evaluatec3.com"}
+                {"id": "eval_link1", "label": "Link 1", "type": "link", "link": "https://culiacan.evaluatec.tecnm.mx"}
             ]}
         ]
     },
@@ -62,6 +60,6 @@ menu_config = {
     "menu_map": {
         "type": "image",
         "label": "Mapa de instalaciones",
-        "image": "/static/images/mapa.png"
+        "image": "/static/img/mapa.png"
     }
 }
