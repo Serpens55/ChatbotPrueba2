@@ -1,5 +1,4 @@
 const socket = io();
-const menuHistory = [];
 let userId = null;
 let userName = null;
 
@@ -72,7 +71,7 @@ function addReturnButton() {
 
 socket.on("show_menu", () => {
     clearMenus();
-    menuHistory.length = 0; // se limpia el historial al volver al menú principal
+
     const menuOptions = [
         { id: "menu_ambar", label: "Ambar" },
         { id: "menu_asp", label: "Aspirantes" },
@@ -101,9 +100,6 @@ socket.on("show_menu", () => {
 socket.on("show_submenu", (data) => {
     clearMenus();
 
-    // Guardamos el submenú actual en el historial
-    menuHistory.push(data.submenu);
-
     const container = document.createElement("div");
     container.classList.add("submenu-container");
 
@@ -112,25 +108,26 @@ socket.on("show_submenu", (data) => {
         container.appendChild(btn);
     });
 
-    // Botón para regresar al submenú anterior (si hay historial)
-    if (menuHistory.length > 1) {
-        const backBtn = createButton("⬅ Regresar", "back", "return-button", null);
-        backBtn.onclick = () => {
-            menuHistory.pop(); // eliminar submenú actual
-            const previous = menuHistory[menuHistory.length - 1];
-            socket.emit("client_show_previous_submenu", { submenu: previous });
-        };
-        container.appendChild(backBtn);
-    }
-
-    // Botón para regresar al menú principal
-    const mainBtn = createButton("🏠 Menú Principal", "main_menu", "return-button", null);
-    mainBtn.onclick = () => {
-        socket.emit("request_main_menu");
-    };
-    container.appendChild(mainBtn);
-
     chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("show_link", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("submenu-container");
+
+    const link = document.createElement("a");
+    link.href = data.link;
+    link.target = "_blank";
+    link.textContent = data.label;
+    link.classList.add("submenu-button");
+
+    container.appendChild(link);
+    chatBox.appendChild(container);
+    addReturnButton();
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
