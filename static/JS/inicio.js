@@ -211,3 +211,43 @@ socket.on("show_info", (data) => {
     chatBox.appendChild(container);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
+
+
+socket.on("show_map", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("image-container", "other-message");
+
+    const img = document.createElement("img");
+    img.src = data.image;
+    img.alt = "Mapa de instalaciones";
+    container.appendChild(img);
+
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("message", (data) => {
+    const messageElement = document.createElement("div");
+
+    if (data.audio_url) {
+        const button = document.createElement("button");
+        button.textContent = data.text || "Reproducir ▶";
+        button.classList.add("menu-button");
+        button.addEventListener("click", () => {
+            const audio = new Audio(data.audio_url);
+            audio.play();
+        });
+        messageElement.appendChild(button);
+    } else {
+        messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
+    }
+
+    messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
