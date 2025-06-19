@@ -27,7 +27,7 @@ menu_config = {
                         "label": "Ingeniería Ambiental",
                         "type": "submenu",
                         "submenu": [
-                            {"id": "ambiental_reticula", "label": "Retícula", "type": "link", "link": "https://..."},
+                            {"id": "ambiental_reticula", "label": "Retícula", "t    ype": "link", "link": "https://..."},
                             {"id": "ambiental_plan", "label": "Plan de estudios", "type": "link", "link": "https://..."},
                             {"id": "ambiental_programas", "label": "Programas de estudios por materia", "type": "link", "link": "https://..."}
                         ]
