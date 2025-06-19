@@ -203,17 +203,5 @@ def handle_return_to_main_menu():
     user_id = request.sid
     emit('show_menu', room=user_id)
 
-@socketio.on("client_show_previous_submenu")
-def client_show_previous_submenu(data):
-    submenu = data.get("submenu", [])
-    emit("show_submenu", {"submenu": submenu}, room=request.sid)
-
-@socketio.on("request_main_menu")
-def handle_main_menu():
-    user_id = request.sid
-    # Esto activará `show_menu` en el cliente
-    emit("show_menu", room=user_id)
-
-
 if __name__ == '__main__':
     socketio.run(app, debug=True)
