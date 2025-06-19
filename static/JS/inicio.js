@@ -63,53 +63,6 @@ function addReturnButton() {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-socket.on("show_menu", () => {
-    const menuContainer = document.createElement("div");
-    menuContainer.classList.add("other-message", "menu-container");
-
-    const message = document.createElement("div");
-    message.classList.add("menu-message");
-    message.textContent = "Mensaje de prueba que va antes del menú:";
-    menuContainer.appendChild(message);
-
-    for (let i = 1; i <= 4; i++) {
-        const btn = document.createElement("button");
-        btn.textContent = `Opción ${i}`;
-        btn.classList.add("menu-button");
-        btn.onclick = () => {
-            socket.emit("menu_option_selected", { id: item.id }); // ✅ ENVÍA id correcto
-        };
-        menuContainer.appendChild(btn);
-    }
-
-    chatBox.appendChild(menuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-
-
-socket.on("show_submenu", (data) => {
-    document.querySelectorAll(".submenu-container").forEach(el => el.remove());
-
-    const submenuContainer = document.createElement("div");
-    submenuContainer.classList.add("other-message", "submenu-container");
-
-    data.submenu.forEach((item) => {
-        const btn = document.createElement("button");
-        btn.textContent = item.label;
-        btn.classList.add("submenu-button");
-
-        btn.onclick = () => {
-            socket.emit("submenu_option_selected", { id: item.id }); // ✅ ENVÍA id
-        };
-
-        submenuContainer.appendChild(btn);
-    });
-
-    chatBox.appendChild(submenuContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
 
 socket.on("show_info", (data) => {
     clearMenus();
