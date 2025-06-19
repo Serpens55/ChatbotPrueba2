@@ -211,19 +211,19 @@ menu_config = {
                         "submenu": [
                             {
                                 "id": "industrial_reticula1",
+                                "label": "Retícula",
+                                "type": "link",
+                                "link": "http://culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula-Ingenieria-Industrial.pdf"
+                            },
+                                                        {
+                                "id": "industrial_reticula2",
                                 "label": "Retícula Especialidad 1",
                                 "type": "link",
                                 "link": "http://culiacan.tecnm.mx/wp-content/uploads/2017/06/Ingenieria-Industrial-Reticula-Nueva-Especialidad-1.pdf"
                             },
                                                         {
-                                "id": "industrial_reticula2",
-                                "label": "Retícula Especialidad 2",
-                                "type": "link",
-                                "link": "http://culiacan.tecnm.mx/wp-content/uploads/2016/10/Reticula-Ingenieria-Industrial.pdf"
-                            },
-                                                        {
                                 "id": "industrial_reticula3",
-                                "label": "Retícula Especialidad 3",
+                                "label": "Retícula Especialidad 2",
                                 "type": "link",
                                 "link": "http://culiacan.tecnm.mx/wp-content/uploads/2017/06/Ingenieria-Industrial-Reticula-Nueva-Especialidad-2.pdf"
                             },
@@ -548,6 +548,6 @@ menu_config = {
         "id": "menu_map",
         "type": "image",
         "label": "Mapa de instalaciones",
-        "image": "/static/images/mapa.png"
+        "image": "/static/img/mapa.png"
     }
 }
