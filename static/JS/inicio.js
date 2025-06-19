@@ -138,17 +138,17 @@ socket.on("show_link", (data) => {
     clearMenus();
 
     const container = document.createElement("div");
-    container.classList.add("info-container", "other-message");
+    container.classList.add("info-container");
 
     const label = document.createElement("div");
-    label.classList.add(".submenu-button");
+    label.classList.add("info-title");
     label.textContent = data.label;
 
     const link = document.createElement("a");
     link.href = data.link;
     link.textContent = "Abrir enlace";
     link.target = "_blank";
-    link.classList.add("menu-message");
+    link.classList.add("info-link");
 
     container.appendChild(label);
     container.appendChild(link);
@@ -251,4 +251,3 @@ socket.on("message", (data) => {
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-    
