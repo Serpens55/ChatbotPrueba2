@@ -134,80 +134,58 @@ socket.on("show_submenu", (data) => {
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-socket.on("show_link", (data) => {
-    clearMenus();
-
-    const container = document.createElement("div");
-    container.classList.add("info-container");
-
-    const label = document.createElement("div");
-    label.classList.add("info-title");
-    label.textContent = data.label;
-
-    const link = document.createElement("a");
-    link.href = data.link;
-    link.textContent = "Abrir enlace";
-    link.target = "_blank";
-    link.classList.add("info-link");
-
-    container.appendChild(label);
-    container.appendChild(link);
-
-    // Botón para regresar al submenú anterior
-    if (menuHistory.length > 0) {
-        const backBtn = createButton("⬅ Regresar", "back", "return-button", null);
-        backBtn.onclick = () => {
-            const previous = menuHistory[menuHistory.length - 1];
-            socket.emit("client_show_previous_submenu", { submenu: previous });
-        };
-        container.appendChild(backBtn);
-    }
-
-    // Botón para volver al menú principal
-    const mainBtn = createButton("🏠 Menú Principal", "main_menu", "return-button", null);
-    mainBtn.onclick = () => {
-        socket.emit("request_main_menu");
-    };
-    container.appendChild(mainBtn);
-
-    chatBox.appendChild(container);
-    chatBox.scrollTop = chatBox.scrollHeight;
-});
-
 socket.on("show_info", (data) => {
     clearMenus();
 
     const container = document.createElement("div");
-    container.classList.add("info-container");
+    container.classList.add("info-container", "other-message");
 
-    const label = document.createElement("div");
-    label.classList.add("info-title");
-    label.textContent = data.label;
+    const title = document.createElement("strong");
+    title.textContent = data.label;
+    container.appendChild(title);
 
-    const text = document.createElement("div");
+    const text = document.createElement("p");
     text.textContent = data.text;
-    text.classList.add("info-text");
-
-    container.appendChild(label);
     container.appendChild(text);
 
-    // Botón para regresar al submenú anterior
-    if (menuHistory.length > 0) {
-        const backBtn = createButton("⬅ Regresar", "back", "return-button", null);
-        backBtn.onclick = () => {
-            const previous = menuHistory[menuHistory.length - 1];
-            socket.emit("client_show_previous_submenu", { submenu: previous });
-        };
-        container.appendChild(backBtn);
-    }
+    chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
 
-    // Botón para volver al menú principal
-    const mainBtn = createButton("🏠 Menú Principal", "main_menu", "return-button", null);
-    mainBtn.onclick = () => {
-        socket.emit("request_main_menu");
-    };
-    container.appendChild(mainBtn);
+socket.on("show_map", (data) => {
+    clearMenus();
+
+    const container = document.createElement("div");
+    container.classList.add("image-container", "other-message");
+
+    const img = document.createElement("img");
+    img.src = data.image;
+    img.alt = "Mapa de instalaciones";
+    container.appendChild(img);
 
     chatBox.appendChild(container);
+    addReturnButton();
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+socket.on("message", (data) => {
+    const messageElement = document.createElement("div");
+
+    if (data.audio_url) {
+        const button = document.createElement("button");
+        button.textContent = data.text || "Reproducir ▶";
+        button.classList.add("menu-button");
+        button.addEventListener("click", () => {
+            const audio = new Audio(data.audio_url);
+            audio.play();
+        });
+        messageElement.appendChild(button);
+    } else {
+        messageElement.textContent = `${data.sender}: ${data.text} (${data.timestamp})`;
+    }
+
+    messageElement.classList.add(data.sender === userName ? "own-message" : "other-message");
+    chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
