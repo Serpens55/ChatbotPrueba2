@@ -55,13 +55,19 @@ function createButton(label, id, className, emitEvent) {
 }
 
 function addReturnButton() {
-    const returnBtn = createButton("🔙 Regresar al menú principal", "menu", "menu-button", "message");
-    const container = document.createElement("div");
-    container.classList.add("menu-container");
-    container.appendChild(returnBtn);
-    chatBox.appendChild(container);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    const returnBtn = document.createElement("button");
+    returnBtn.textContent = "Regresar al menú principal";
+    returnBtn.classList.add("return-button");
+    returnBtn.onclick = () => {
+        socket.emit("return_to_main_menu");
+    };
+
+    const container = document.querySelector(".submenu-container");
+    if (container) {
+        container.appendChild(returnBtn);
+    }
 }
+
 
 socket.on("show_menu", () => {
     clearMenus();

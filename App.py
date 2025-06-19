@@ -198,5 +198,10 @@ def handle_admin_message(data):
     emit('message', msg, room=user_id)
     emit('message_admin', {'user_id': user_id, 'message': msg}, room=request.sid)
 
+@socketio.on('return_to_main_menu')
+def handle_return_to_main_menu():
+    user_id = request.sid
+    emit('show_menu', room=user_id)
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
